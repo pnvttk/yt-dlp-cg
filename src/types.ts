@@ -4,6 +4,7 @@ export interface GlobalConfig {
 		audio: AudioConfig;
 		video: VideoConfig;
 		playlist: PlaylistConfig;
+		range: RangeConfig;
 		postProcess: PostProcessConfig;
 	};
 }
@@ -27,6 +28,12 @@ export interface PlaylistConfig {
 	items: string; // "1,2,5,10"
 }
 
+export interface RangeConfig {
+	enabled: boolean;
+	start: string; // "00:00:00"
+	end: string;   // "00:01:00"
+}
+
 export interface PostProcessConfig {
 	enabled: boolean;
 	embedThumbnail: boolean;
@@ -41,6 +48,7 @@ export const initialConfig: GlobalConfig = {
 		audio: { enabled: false, format: 'mp3', quality: '0' },
 		video: { enabled: true, resolution: 'best', ext: 'auto' },
 		playlist: { enabled: false, startIndex: 1, endIndex: null, items: '' },
+		range: { enabled: false, start: '', end: '' },
 		postProcess: { enabled: true, embedThumbnail: false, embedMetadata: true, embedSubs: false, proxy: '' },
 	},
 };

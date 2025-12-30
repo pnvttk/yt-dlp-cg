@@ -53,7 +53,23 @@ export function buildCommand(config: GlobalConfig): string {
 		parts.push('--no-playlist');
 	}
 
-	// 4. Post Processing
+	// 4. Time Range / Trim
+	if (config.features.range.enabled) {
+		if (config.features.range.start || config.features.range.end) {
+			// yt-dlp format: "*START-END"
+			// If start is empty, it means from beginning: "*-END" (yt-dlp handles "*0-END")
+			// If end is empty, it means to end: "*START-inf" (yt-dlp handles "*START-")
+
+			const start = config.features.range.start || '';
+			const end = config.features.range.end || '';
+			parts.push(`--download-sections "*${start}-${end}"`);
+
+			// Force downloader to use ffmpeg for precision if needed, but modern yt-dlp usually handles it.
+			parts.push('--force-keyframes-at-cuts');
+		}
+	}
+
+	// 5. Post Processing
 	if (config.features.postProcess.enabled) {
 		if (config.features.postProcess.embedThumbnail) parts.push('--embed-thumbnail');
 		if (config.features.postProcess.embedMetadata) parts.push('--add-metadata');

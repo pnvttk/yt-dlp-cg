@@ -4,6 +4,7 @@ import { Card } from './components/ui/Card';
 import { AudioOptions } from './features/audio/AudioOptions';
 import { VideoOptions } from './features/video/VideoOptions';
 import { PlaylistOptions } from './features/playlist/PlaylistOptions';
+import { RangeOptions } from './features/range/RangeOptions';
 import { PostProcessingOptions } from './features/postProcess/PostProcessingOptions';
 import { CommandPreview } from './features/command/CommandPreview';
 
@@ -31,6 +32,7 @@ function FeatureGrid() {
       <VideoOptions />
       <AudioOptions />
       <PlaylistOptions />
+      <RangeOptions />
       <PostProcessingOptions />
     </div>
   );
