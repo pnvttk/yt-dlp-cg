@@ -31,15 +31,28 @@ export function PostProcessingOptions() {
                <span className="text-text font-medium text-sm">Add Metadata</span>
             </label>
 
-            <label className="flex items-center gap-2 cursor-pointer bg-surface p-2 rounded hover:bg-surface/80">
-               <input 
-                 type="checkbox" 
-                 checked={postProcess.embedSubs}
-                 onChange={(e) => updateFeature('postProcess', { embedSubs: e.target.checked })}
-                 className="accent-orange-500 w-4 h-4"
-               />
-               <span className="text-text font-medium text-sm">Embed Subtitles</span>
-            </label>
+            <div className="flex flex-col gap-2">
+                 <label className="flex items-center gap-2 cursor-pointer bg-surface p-2 rounded hover:bg-surface/80">
+                   <input 
+                     type="checkbox" 
+                     checked={postProcess.embedSubs}
+                     onChange={(e) => updateFeature('postProcess', { embedSubs: e.target.checked })}
+                     className="accent-orange-500 w-4 h-4"
+                   />
+                   <span className="text-text font-medium text-sm">Embed Subtitles</span>
+                </label>
+                
+                {postProcess.embedSubs && (
+                    <input 
+                        type="text"
+                        placeholder="Langs: all, en, ja..." 
+                        className="ml-6 w-[85%] bg-black/20 border border-border/50 rounded p-1.5 text-xs text-white placeholder:text-text-muted/40 focus:border-orange-500 focus:outline-none"
+                        value={postProcess.subtitleLangs}
+                        onChange={(e) => updateFeature('postProcess', { subtitleLangs: e.target.value })}
+                        title="Subtitle languages (regex or comma-separated). Leave empty for default."
+                    />
+                )}
+            </div>
         </div>
 
         <div>

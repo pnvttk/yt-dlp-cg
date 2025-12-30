@@ -39,6 +39,7 @@ export interface PostProcessConfig {
 	embedThumbnail: boolean;
 	embedMetadata: boolean;
 	embedSubs: boolean;
+	subtitleLangs: string;
 	proxy: string;
 }
 
@@ -49,6 +50,6 @@ export const initialConfig: GlobalConfig = {
 		video: { enabled: true, resolution: 'best', ext: 'auto' },
 		playlist: { enabled: false, startIndex: 1, endIndex: null, items: '' },
 		range: { enabled: false, start: '', end: '' },
-		postProcess: { enabled: true, embedThumbnail: false, embedMetadata: true, embedSubs: false, proxy: '' },
+		postProcess: { enabled: true, embedThumbnail: false, embedMetadata: true, embedSubs: false, subtitleLangs: '', proxy: '' },
 	},
 };

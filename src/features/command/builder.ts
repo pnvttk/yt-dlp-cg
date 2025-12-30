@@ -7,8 +7,8 @@ export function buildCommand(config: GlobalConfig): string {
 
 	const parts: string[] = ['yt-dlp'];
 
-	// 1. Audio Module
-	if (config.features.audio.enabled) {
+	// 1. Audio Module (Only if Video is NOT enabled, to avoid conflict/-x overriding video)
+	if (config.features.audio.enabled && !config.features.video.enabled) {
 		parts.push('-x');
 		if (config.features.audio.format !== 'best') {
 			parts.push(`--audio-format ${config.features.audio.format}`);
@@ -34,6 +34,9 @@ export function buildCommand(config: GlobalConfig): string {
 
 		if (config.features.video.ext !== 'auto') {
 			parts.push(`--merge-output-format ${config.features.video.ext}`);
+		} else {
+			// Explicitly request merge to MKV if auto, to ensure audio/subs are merged
+			parts.push('--merge-output-format mkv');
 		}
 	}
 
@@ -73,7 +76,12 @@ export function buildCommand(config: GlobalConfig): string {
 	if (config.features.postProcess.enabled) {
 		if (config.features.postProcess.embedThumbnail) parts.push('--embed-thumbnail');
 		if (config.features.postProcess.embedMetadata) parts.push('--add-metadata');
-		if (config.features.postProcess.embedSubs) parts.push('--write-subs --embed-subs');
+		if (config.features.postProcess.embedSubs) {
+			parts.push('--embed-subs');
+			if (config.features.postProcess.subtitleLangs) {
+				parts.push(`--sub-langs "${config.features.postProcess.subtitleLangs}"`);
+			}
+		}
 		if (config.features.postProcess.proxy) parts.push(`--proxy "${config.features.postProcess.proxy}"`);
 	}
 
