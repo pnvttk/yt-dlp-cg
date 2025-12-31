@@ -85,8 +85,14 @@ export function buildCommand(config: GlobalConfig): string {
 		if (config.features.postProcess.proxy) parts.push(`--proxy "${config.features.postProcess.proxy}"`);
 	}
 
-	// Final: URL
-	parts.push(`"${config.url}"`);
+	// Final: URL(s)
+	// Split by whitespace to support multiple URLs
+	const urls = config.url.trim().split(/\s+/);
+	urls.forEach(url => {
+		if (url) {
+			parts.push(`"${url}"`);
+		}
+	});
 
 	return parts.join(' ');
 }

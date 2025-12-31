@@ -14,10 +14,9 @@ function UrlInput() {
     <Card className="border-primary/20 bg-surface">
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-text-muted">Target URL</label>
-        <input 
-          type="text" 
-          placeholder="https://www.youtube.com/watch?v=..."
-          className="w-full bg-black/30 border border-border rounded-md p-3 text-white placeholder:text-text-muted/50 focus:border-primary focus:outline-none transition-colors"
+        <textarea 
+          placeholder="https://www.youtube.com/watch?v=... (One per line or space separated)"
+          className="w-full bg-black/30 border border-border rounded-md p-3 text-white placeholder:text-text-muted/50 focus:border-primary focus:outline-none transition-colors min-h-[100px] resize-y"
           value={config.url}
           onChange={(e) => setUrl(e.target.value)}
         />
