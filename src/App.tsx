@@ -14,7 +14,7 @@ function UrlInput() {
     <Card className="border-primary/20 bg-surface">
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-text-muted">Target URL</label>
-        <textarea 
+        <textarea
           placeholder="https://www.youtube.com/watch?v=... (One per line or space separated)"
           className="w-full bg-black/30 border border-border rounded-md p-3 text-white placeholder:text-text-muted/50 focus:border-primary focus:outline-none transition-colors min-h-[100px] resize-y"
           value={config.url}
@@ -30,8 +30,8 @@ function FeatureGrid() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <VideoOptions />
       <AudioOptions />
-      <PlaylistOptions />
       <SectionsOptions />
+      <PlaylistOptions />
       <PostProcessingOptions />
     </div>
   );

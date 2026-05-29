@@ -27,9 +27,12 @@ export function SectionsOptions() {
   return (
     <Card title="Download Sections" className="border-cyan-500/50 bg-cyan-500/5">
       <div className="flex flex-col gap-4">
+		<p className="text-xs text-text-muted">
+		Download specific sections is slower than downloading the whole video, use ffmpeg to split the video after downloading is faster.
+		</p>
          <label className="flex items-center gap-2 cursor-pointer">
-           <input 
-             type="checkbox" 
+           <input
+             type="checkbox"
              checked={sections.enabled}
              onChange={(e) => toggleFeature('sections', e.target.checked)}
              className="accent-cyan-500 w-4 h-4"
@@ -38,8 +41,8 @@ export function SectionsOptions() {
         </label>
 
         <label className="flex items-center gap-2 cursor-pointer">
-          <input 
-            type="radio" 
+          <input
+            type="radio"
             name="sectionMode"
             checked={sections.mode === 'ui'}
             onChange={() => updateFeature('sections', { mode: 'ui' })}
@@ -49,8 +52,8 @@ export function SectionsOptions() {
         </label>
 
         <label className="flex items-center gap-2 cursor-pointer">
-          <input 
-            type="radio" 
+          <input
+            type="radio"
             name="sectionMode"
             checked={sections.mode === 'text'}
             onChange={() => updateFeature('sections', { mode: 'text' })}
@@ -60,14 +63,14 @@ export function SectionsOptions() {
         </label>
 
         {sections.mode === 'ui' && (
-          <SectionInputs sections={sections.sections} 
-                         onUpdate={updateFeature} 
+          <SectionInputs sections={sections.sections}
+                         onUpdate={updateFeature}
                          onToggleSection={handleToggleSection}
           />
         )}
 
         {sections.mode === 'text' && (
-          <TextAreaInput 
+          <TextAreaInput
             value={sections.textInput}
             onChange={(val) => updateFeature('sections', { textInput: val })}
           />
@@ -91,8 +94,8 @@ interface SectionInputsProps {
 
 function SectionInputs({ sections, onUpdate, onToggleSection }: SectionInputsProps) {
   const addSection = () => {
-    onUpdate('sections' as string, { 
-      sections: [...sections, { id: crypto.randomUUID(), start: '' }] 
+    onUpdate('sections' as string, {
+      sections: [...sections, { id: crypto.randomUUID(), start: '' }]
     });
   };
 
@@ -102,7 +105,7 @@ function SectionInputs({ sections, onUpdate, onToggleSection }: SectionInputsPro
 
   const updateSection = (id: string, start: string) => {
     onUpdate('sections' as string, {
-      sections: sections.map(s => 
+      sections: sections.map(s =>
         s.id === id ? { ...s, start } : s
       )
     });
@@ -113,15 +116,15 @@ function SectionInputs({ sections, onUpdate, onToggleSection }: SectionInputsPro
       {sections.map((section, idx) => (
         <div key={section.id} className="flex items-center gap-3 p-3 bg-surface/50 rounded border border-border">
           <span className="text-xs text-text-muted w-6">#{idx + 1}</span>
-          <input 
-            type="text" 
+          <input
+            type="text"
             placeholder="00:00:00-00:01:00"
             value={section.start}
             onChange={(e) => updateSection(section.id, e.target.value)}
             className="flex-grow bg-surface border border-border rounded p-2 text-sm focus:border-cyan-500 focus:outline-none"
           />
-          <button 
-            onClick={() => removeSection(section.id)} 
+          <button
+            onClick={() => removeSection(section.id)}
             className="text-red-400 hover:text-red-500 text-sm font-medium"
             aria-label={`Remove section ${idx + 1}`}
           >
@@ -144,7 +147,7 @@ interface TextAreaInputProps {
 
 function TextAreaInput({ value, onChange }: TextAreaInputProps) {
   return (
-    <textarea 
+    <textarea
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="01:50:00-01:50:55&#10;05:20:15-05:30:00"

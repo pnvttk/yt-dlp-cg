@@ -63,7 +63,7 @@ export const initialConfig: GlobalConfig = {
 		video: { enabled: true, resolution: 'best', ext: 'auto' },
 		playlist: { enabled: false, startIndex: 1, endIndex: null, items: '' },
 		range: { enabled: false, start: '', end: '' },
-		sections: { enabled: false, mode: 'ui', sections: [], textInput: '' },
+		sections: { enabled: false, mode: 'text', sections: [], textInput: '' },
 		postProcess: { enabled: true, embedThumbnail: false, embedMetadata: true, embedSubs: false, subtitleLangs: '', proxy: '' },
 	},
 };
