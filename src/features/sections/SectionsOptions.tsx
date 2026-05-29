@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useConfig } from '../../context/ConfigContext';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -5,6 +6,22 @@ import { Button } from '../../components/ui/Button';
 export function SectionsOptions() {
   const { config, toggleFeature, updateFeature } = useConfig();
   const { sections } = config.features;
+
+  const [isFfmpegModalOpen, setIsFfmpegModalOpen] = useState(false);
+  const [ffmpegFileName, setFfmpegFileName] = useState('');
+
+  const handleOpenFfmpeg = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const currentName = localStorage.getItem('yt-dlp-cg:output-name') || '';
+    setFfmpegFileName(currentName);
+    setIsFfmpegModalOpen(true);
+  };
+
+  const handleConfirmFfmpeg = () => {
+    localStorage.setItem('yt-dlp-cg:output-name', ffmpegFileName);
+    setIsFfmpegModalOpen(false);
+    window.open('https://pnvttk.github.io/ffmpeg-cg/', '_blank');
+  };
 
   const handleToggleSection = (id: string) => {
     updateFeature('sections', {
@@ -28,7 +45,7 @@ export function SectionsOptions() {
     <Card title="Download Sections" className="border-cyan-500/50 bg-cyan-500/5">
       <div className="flex flex-col gap-4">
 		<p className="text-xs text-text-muted">
-		Download specific sections is slower than downloading the whole video, use ffmpeg to split the video after downloading is faster.
+		Download specific sections is slower than downloading the whole video, use <a href="#" onClick={handleOpenFfmpeg} className="text-cyan-500 hover:underline">ffmpeg</a> to split the video after downloading is faster.
 		</p>
          <label className="flex items-center gap-2 cursor-pointer">
            <input
@@ -80,6 +97,27 @@ export function SectionsOptions() {
           Format: <code className="bg-surface p-0.5 rounded">HH:MM:SS-HH:MM:SS</code>
           (e.g., <code className="bg-surface p-0.5 rounded">01:50:00-01:50:55</code>)
         </p>
+
+        {isFfmpegModalOpen && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-surface border border-border rounded-lg shadow-xl p-6 w-full max-w-md">
+              <h3 className="text-lg font-bold text-text mb-2">Open in ffmpeg-cg</h3>
+              <p className="text-sm text-text-muted mb-4">
+                Confirm or edit the filename that will be passed to ffmpeg-cg.
+              </p>
+              <input
+                type="text"
+                value={ffmpegFileName}
+                onChange={(e) => setFfmpegFileName(e.target.value)}
+                className="w-full bg-black/30 border border-border rounded p-2 text-sm text-text focus:border-cyan-500 focus:outline-none mb-6"
+              />
+              <div className="flex justify-end gap-3">
+                <Button variant="secondary" onClick={() => setIsFfmpegModalOpen(false)}>Cancel</Button>
+                <Button variant="primary" onClick={handleConfirmFfmpeg}>Open ffmpeg-cg</Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   );
