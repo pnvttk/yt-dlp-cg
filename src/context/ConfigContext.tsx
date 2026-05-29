@@ -48,8 +48,18 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
       ext = 'mp3';
     }
 
-    const fullName = config.features.outputName.name ? `${config.features.outputName.name}.${ext}` : '';
-    localStorage.setItem(STORAGE_KEY, fullName);
+    if (config.features.outputName.enabled && config.features.outputName.name) {
+      const fullName = `${config.features.outputName.name}.${ext}`;
+      localStorage.setItem(STORAGE_KEY, fullName);
+    } else {
+      let currentName = localStorage.getItem(STORAGE_KEY);
+      let stem = 'video';
+      if (currentName) {
+        const lastDot = currentName.lastIndexOf('.');
+        stem = lastDot !== -1 ? currentName.substring(0, lastDot) : currentName;
+      }
+      localStorage.setItem(STORAGE_KEY, `${stem}.${ext}`);
+    }
   }, [
     config.features.outputName.name,
     config.features.video.enabled,

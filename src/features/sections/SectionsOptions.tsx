@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useConfig } from '../../context/ConfigContext';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -12,8 +12,28 @@ export function SectionsOptions() {
 
   const handleOpenFfmpeg = (e: React.MouseEvent) => {
     e.preventDefault();
-    const currentName = localStorage.getItem('yt-dlp-cg:output-name') || '';
+    
+    let ext = 'mkv';
+    if (config.features.video.enabled) {
+      ext = config.features.video.ext === 'auto' ? 'mkv' : config.features.video.ext;
+    } else if (config.features.audio.enabled && config.features.audio.format !== 'best') {
+      ext = config.features.audio.format;
+    } else if (config.features.audio.enabled && config.features.audio.format === 'best') {
+      ext = 'mp3';
+    }
+
+    let currentName = localStorage.getItem('yt-dlp-cg:output-name');
+    if (!currentName) {
+      currentName = `video.${ext}`;
+    } else {
+      // Keep the stem, but swap the extension to match current settings
+      const lastDot = currentName.lastIndexOf('.');
+      const stem = lastDot !== -1 ? currentName.substring(0, lastDot) : currentName;
+      currentName = `${stem}.${ext}`;
+    }
+
     setFfmpegFileName(currentName);
+    localStorage.setItem('yt-dlp-cg:output-name', currentName);
     setIsFfmpegModalOpen(true);
   };
 
@@ -22,6 +42,34 @@ export function SectionsOptions() {
     setIsFfmpegModalOpen(false);
     window.open('https://pnvttk.github.io/ffmpeg-cg/', '_blank');
   };
+
+  useEffect(() => {
+    if (isFfmpegModalOpen) {
+      let ext = 'mkv';
+      if (config.features.video.enabled) {
+        ext = config.features.video.ext === 'auto' ? 'mkv' : config.features.video.ext;
+      } else if (config.features.audio.enabled && config.features.audio.format !== 'best') {
+        ext = config.features.audio.format;
+      } else if (config.features.audio.enabled && config.features.audio.format === 'best') {
+        ext = 'mp3';
+      }
+      
+      const lastDot = ffmpegFileName.lastIndexOf('.');
+      const stem = lastDot !== -1 ? ffmpegFileName.substring(0, lastDot) : (ffmpegFileName || 'video');
+      const newName = `${stem}.${ext}`;
+      
+      if (newName !== ffmpegFileName) {
+        setFfmpegFileName(newName);
+        localStorage.setItem('yt-dlp-cg:output-name', newName);
+      }
+    }
+  }, [
+    config.features.video.enabled,
+    config.features.video.ext,
+    config.features.audio.enabled,
+    config.features.audio.format,
+    isFfmpegModalOpen
+  ]);
 
   const handleToggleSection = (id: string) => {
     updateFeature('sections', {
@@ -108,7 +156,10 @@ export function SectionsOptions() {
               <input
                 type="text"
                 value={ffmpegFileName}
-                onChange={(e) => setFfmpegFileName(e.target.value)}
+                onChange={(e) => {
+                  setFfmpegFileName(e.target.value);
+                  localStorage.setItem('yt-dlp-cg:output-name', e.target.value);
+                }}
                 className="w-full bg-black/30 border border-border rounded p-2 text-sm text-text focus:border-cyan-500 focus:outline-none mb-6"
               />
               <div className="flex justify-end gap-3">
