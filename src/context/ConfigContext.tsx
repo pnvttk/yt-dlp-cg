@@ -5,11 +5,8 @@ interface ConfigContextType {
   config: GlobalConfig;
   updateConfig: (updater: (prev: GlobalConfig) => GlobalConfig) => void;
   setUrl: (url: string) => void;
-  toggleFeature: (feature: keyof GlobalConfig['features'], enabled: boolean) => void;
-  updateFeature: <K extends keyof GlobalConfig['features']>(
-    feature: K,
-    updates: Partial<GlobalConfig['features'][K]>
-  ) => void;
+  toggleFeature: (feature: string, enabled: boolean) => void;
+  updateFeature: (feature: string, updates: Partial<GlobalConfig['features'][keyof GlobalConfig['features']]>) => void;
 }
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
@@ -25,25 +22,22 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
     setConfig((prev) => ({ ...prev, url }));
   };
 
-  const toggleFeature = (feature: keyof GlobalConfig['features'], enabled: boolean) => {
+  const toggleFeature = (feature: string, enabled: boolean) => {
     setConfig((prev) => ({
       ...prev,
       features: {
         ...prev.features,
-        [feature]: { ...prev.features[feature], enabled },
+        [feature as keyof GlobalConfig['features']]: { ...(prev.features[feature as keyof GlobalConfig['features']] as GlobalConfig['features'][keyof GlobalConfig['features']]), enabled },
       },
     }));
   };
 
-  const updateFeature = <K extends keyof GlobalConfig['features']>(
-    feature: K,
-    updates: Partial<GlobalConfig['features'][K]>
-  ) => {
+  const updateFeature = (feature: string, updates: Partial<GlobalConfig['features'][keyof GlobalConfig['features']]>) => {
     setConfig((prev) => ({
       ...prev,
       features: {
         ...prev.features,
-        [feature]: { ...prev.features[feature], ...updates },
+        [feature as keyof GlobalConfig['features']]: { ...(prev.features[feature as keyof GlobalConfig['features']] as GlobalConfig['features'][keyof GlobalConfig['features']]), ...updates },
       },
     }));
   };

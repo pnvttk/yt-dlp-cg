@@ -56,20 +56,33 @@ export function buildCommand(config: GlobalConfig): string {
 		parts.push('--no-playlist');
 	}
 
-	// 4. Time Range / Trim
-	if (config.features.range.enabled) {
-		if (config.features.range.start || config.features.range.end) {
-			// yt-dlp format: "*START-END"
-			// If start is empty, it means from beginning: "*-END" (yt-dlp handles "*0-END")
-			// If end is empty, it means to end: "*START-inf" (yt-dlp handles "*START-")
+	// 4. Download Sections
+	if (config.features.sections.enabled) {
+		const sections = config.features.sections.sections;
+		const textInput = config.features.sections.textInput;
 
-			const start = config.features.range.start || '';
-			const end = config.features.range.end || '';
-			parts.push(`--download-sections "*${start}-${end}"`);
-
-			// Force downloader to use ffmpeg for precision if needed, but modern yt-dlp usually handles it.
-			parts.push('--force-keyframes-at-cuts');
+		if (sections.length > 0) {
+			// UI mode: generate multiple --download-sections flags
+			sections.forEach((section) => {
+				parts.push(`--download-sections "*${section.start}"`);
+			});
+		} else if (textInput.trim()) {
+			// Text mode: parse lines and generate flags
+			const lines = textInput.trim().split('\n').filter((line) => line.trim());
+			lines.forEach((line) => {
+				const trimmed = line.trim();
+				// Validate strict format: HH:MM:SS-HH:MM:SS
+				if (/^\d{2}:\d{2}:\d{2}-\d{2}:\d{2}:\d{2}$/.test(trimmed)) {
+					parts.push(`--download-sections "*${trimmed}"`);
+				}
+			});
 		}
+
+		// Force keyframes for clean cuts
+		parts.push('--force-keyframes-at-cuts');
+
+		// Force output template to include section times
+		parts.push('-o "[%(id)s]_%(section_start)s-%(section_end)s.%(ext)s"');
 	}
 
 	// 5. Post Processing
@@ -88,7 +101,7 @@ export function buildCommand(config: GlobalConfig): string {
 	// Final: URL(s)
 	// Split by whitespace to support multiple URLs
 	const urls = config.url.trim().split(/\s+/);
-	urls.forEach(url => {
+	urls.forEach((url) => {
 		if (url) {
 			parts.push(`"${url}"`);
 		}

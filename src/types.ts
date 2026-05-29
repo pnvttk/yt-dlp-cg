@@ -5,6 +5,7 @@ export interface GlobalConfig {
 		video: VideoConfig;
 		playlist: PlaylistConfig;
 		range: RangeConfig;
+		sections: SectionsConfig;
 		postProcess: PostProcessConfig;
 	};
 }
@@ -34,6 +35,18 @@ export interface RangeConfig {
 	end: string;   // "00:01:00"
 }
 
+export interface Section {
+	id: string;
+	start: string;        // "HH:MM:SS-HH:MM:SS"
+}
+
+export interface SectionsConfig {
+	enabled: boolean;
+	mode: 'ui' | 'text';  // 'ui' = dynamic form inputs, 'text' = text area
+	sections: Section[];   // For UI mode
+	textInput: string;     // For text mode (multi-line)
+}
+
 export interface PostProcessConfig {
 	enabled: boolean;
 	embedThumbnail: boolean;
@@ -50,6 +63,7 @@ export const initialConfig: GlobalConfig = {
 		video: { enabled: true, resolution: 'best', ext: 'auto' },
 		playlist: { enabled: false, startIndex: 1, endIndex: null, items: '' },
 		range: { enabled: false, start: '', end: '' },
+		sections: { enabled: false, mode: 'ui', sections: [], textInput: '' },
 		postProcess: { enabled: true, embedThumbnail: false, embedMetadata: true, embedSubs: false, subtitleLangs: '', proxy: '' },
 	},
 };
