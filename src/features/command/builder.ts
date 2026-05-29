@@ -102,6 +102,20 @@ export function buildCommand(config: GlobalConfig): string {
 		parts.push('-o "[%(id)s]_%(section_start)s-%(section_end)s.%(ext)s"');
 	}
 
+	// 4.5. Output Name
+	if (config.features.outputName.enabled && config.features.outputName.name && !config.features.sections.enabled) {
+		let ext = 'mkv';
+		if (config.features.video.enabled) {
+			ext = config.features.video.ext === 'auto' ? 'mkv' : config.features.video.ext;
+		} else if (config.features.audio.enabled && config.features.audio.format !== 'best') {
+			ext = config.features.audio.format;
+		} else if (config.features.audio.enabled && config.features.audio.format === 'best') {
+			ext = 'mp3';
+		}
+		
+		parts.push(`-o "${config.features.outputName.name}.${ext}"`);
+	}
+
 	// 5. Post Processing
 	if (config.features.postProcess.enabled) {
 		if (config.features.postProcess.embedThumbnail) parts.push('--embed-thumbnail');

@@ -7,6 +7,7 @@ import { PlaylistOptions } from './features/playlist/PlaylistOptions';
 import { SectionsOptions } from './features/sections/SectionsOptions';
 import { PostProcessingOptions } from './features/postProcess/PostProcessingOptions';
 import { CommandPreview } from './features/command/CommandPreview';
+import { OutputNameOptions } from './features/outputName/OutputNameOptions';
 
 function UrlInput() {
   const { config, setUrl } = useConfig();
@@ -42,6 +43,7 @@ function App() {
     <ConfigProvider>
       <Layout>
         <UrlInput />
+        <OutputNameOptions />
         <FeatureGrid />
         <CommandPreview />
       </Layout>

@@ -7,6 +7,7 @@ export interface GlobalConfig {
 		range: RangeConfig;
 		sections: SectionsConfig;
 		postProcess: PostProcessConfig;
+		outputName: OutputNameConfig;
 	};
 }
 
@@ -56,6 +57,11 @@ export interface PostProcessConfig {
 	proxy: string;
 }
 
+export interface OutputNameConfig {
+	enabled: boolean;
+	name: string;
+}
+
 export const initialConfig: GlobalConfig = {
 	url: '',
 	features: {
@@ -65,5 +71,6 @@ export const initialConfig: GlobalConfig = {
 		range: { enabled: false, start: '', end: '' },
 		sections: { enabled: false, mode: 'text', sections: [], textInput: '' },
 		postProcess: { enabled: true, embedThumbnail: false, embedMetadata: true, embedSubs: false, subtitleLangs: '', proxy: '' },
+		outputName: { enabled: false, name: '' },
 	},
 };
