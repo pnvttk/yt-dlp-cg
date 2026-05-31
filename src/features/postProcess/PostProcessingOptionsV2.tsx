@@ -3,9 +3,14 @@ import { Card } from "../../components/ui/Card";
 interface Props {
     enabled?: boolean;
     ffmpeg?: string;
+    updateFeature?: (key: string, value: any) => void;
 }
 
-export function PostProcessingOptionsV2({ enabled, ffmpeg }: Props) {
+export function PostProcessingOptionsV2({
+    enabled,
+    ffmpeg,
+    updateFeature,
+}: Props) {
     if (!enabled) {
         return (
             <Card
@@ -32,7 +37,9 @@ export function PostProcessingOptionsV2({ enabled, ffmpeg }: Props) {
                     <input
                         type="checkbox"
                         checked={enabled}
-                        onChange={() => {}}
+                        onChange={() =>
+                            updateFeature?.("postProcess", { enabled: true })
+                        }
                         className="w-4 h-4 accent-secondary"
                     />
                     <span className="text-sm text-secondary">Enabled</span>
@@ -46,7 +53,11 @@ export function PostProcessingOptionsV2({ enabled, ffmpeg }: Props) {
                             type="text"
                             className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
                             value={ffmpeg}
-                            onChange={() => {}}
+                            onChange={(e) =>
+                                updateFeature?.("postProcess", {
+                                    ffmpeg: e.target.value,
+                                })
+                            }
                         />
                     </div>
                 </div>

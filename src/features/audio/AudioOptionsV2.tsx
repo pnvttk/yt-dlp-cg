@@ -4,9 +4,15 @@ interface Props {
     enabled?: boolean;
     format?: string;
     quality?: string | number;
+    updateFeature?: (key: string, value: any) => void;
 }
 
-export function AudioOptionsV2({ enabled, format, quality }: Props) {
+export function AudioOptionsV2({
+    enabled,
+    format,
+    quality,
+    updateFeature,
+}: Props) {
     if (!enabled) {
         return (
             <Card
@@ -30,7 +36,9 @@ export function AudioOptionsV2({ enabled, format, quality }: Props) {
                     <input
                         type="checkbox"
                         checked={enabled}
-                        onChange={() => {}}
+                        onChange={() =>
+                            updateFeature?.("audio", { enabled: true })
+                        }
                         className="w-4 h-4 accent-primary"
                     />
                     <span className="text-sm text-primary">Enabled</span>
@@ -43,7 +51,11 @@ export function AudioOptionsV2({ enabled, format, quality }: Props) {
                         <select
                             className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-primary focus:outline-none font-mono"
                             value={format}
-                            onChange={() => {}}
+                            onChange={(e) =>
+                                updateFeature?.("audio", {
+                                    format: e.target.value,
+                                })
+                            }
                         >
                             <option value="best">Best</option>
                             <option value="mp3">MP3</option>
@@ -61,7 +73,11 @@ export function AudioOptionsV2({ enabled, format, quality }: Props) {
                             max="10"
                             className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-primary focus:outline-none font-mono"
                             value={quality}
-                            onChange={() => {}}
+                            onChange={(e) =>
+                                updateFeature?.("audio", {
+                                    quality: e.target.value,
+                                })
+                            }
                         />
                     </div>
                 </div>

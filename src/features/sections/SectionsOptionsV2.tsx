@@ -3,9 +3,10 @@ import { Card } from "../../components/ui/Card";
 interface Props {
     enabled?: boolean;
     sections?: string;
+    updateFeature?: (key: string, value: any) => void;
 }
 
-export function SectionsOptionsV2({ enabled, sections }: Props) {
+export function SectionsOptionsV2({ enabled, sections, updateFeature }: Props) {
     if (!enabled) {
         return (
             <Card
@@ -29,7 +30,9 @@ export function SectionsOptionsV2({ enabled, sections }: Props) {
                     <input
                         type="checkbox"
                         checked={enabled}
-                        onChange={() => {}}
+                        onChange={() =>
+                            updateFeature?.("sections", { enabled: true })
+                        }
                         className="w-4 h-4 accent-secondary"
                     />
                     <span className="text-sm text-secondary">Enabled</span>
@@ -42,7 +45,11 @@ export function SectionsOptionsV2({ enabled, sections }: Props) {
                         <select
                             className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
                             value={sections}
-                            onChange={() => {}}
+                            onChange={(e) =>
+                                updateFeature?.("sections", {
+                                    textInput: e.target.value,
+                                })
+                            }
                         >
                             <option value="title">Title</option>
                             <option value="uploader">Uploader</option>

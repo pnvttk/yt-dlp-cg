@@ -4,9 +4,15 @@ interface Props {
     enabled?: boolean;
     resolution?: string;
     ext?: string;
+    updateFeature?: (key: string, value: any) => void;
 }
 
-export function VideoOptionsV2({ enabled, resolution, ext }: Props) {
+export function VideoOptionsV2({
+    enabled,
+    resolution,
+    ext,
+    updateFeature,
+}: Props) {
     if (!enabled) {
         return (
             <Card
@@ -30,7 +36,9 @@ export function VideoOptionsV2({ enabled, resolution, ext }: Props) {
                     <input
                         type="checkbox"
                         checked={enabled}
-                        onChange={() => {}}
+                        onChange={() =>
+                            updateFeature?.("video", { enabled: true })
+                        }
                         className="w-4 h-4 accent-secondary"
                     />
                     <span className="text-sm text-secondary">Enabled</span>
@@ -43,7 +51,11 @@ export function VideoOptionsV2({ enabled, resolution, ext }: Props) {
                         <select
                             className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
                             value={resolution}
-                            onChange={() => {}}
+                            onChange={(e) =>
+                                updateFeature?.("video", {
+                                    resolution: e.target.value,
+                                })
+                            }
                         >
                             <option value="best">Best Available</option>
                             <option value="4k">4K (2160p)</option>
@@ -59,7 +71,11 @@ export function VideoOptionsV2({ enabled, resolution, ext }: Props) {
                         <select
                             className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
                             value={ext}
-                            onChange={() => {}}
+                            onChange={(e) =>
+                                updateFeature?.("video", {
+                                    ext: e.target.value,
+                                })
+                            }
                         >
                             <option value="auto">Auto</option>
                             <option value="mp4">MP4</option>

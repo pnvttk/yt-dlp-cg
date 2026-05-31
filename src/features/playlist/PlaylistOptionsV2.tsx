@@ -3,9 +3,10 @@ import { Card } from "../../components/ui/Card";
 interface Props {
     enabled?: boolean;
     mode?: string;
+    updateFeature?: (key: string, value: any) => void;
 }
 
-export function PlaylistOptionsV2({ enabled, mode }: Props) {
+export function PlaylistOptionsV2({ enabled, mode, updateFeature }: Props) {
     if (!enabled) {
         return (
             <Card
@@ -29,7 +30,9 @@ export function PlaylistOptionsV2({ enabled, mode }: Props) {
                     <input
                         type="checkbox"
                         checked={enabled}
-                        onChange={() => {}}
+                        onChange={() =>
+                            updateFeature?.("playlist", { enabled: true })
+                        }
                         className="w-4 h-4 accent-secondary"
                     />
                     <span className="text-sm text-secondary">Enabled</span>
@@ -42,7 +45,11 @@ export function PlaylistOptionsV2({ enabled, mode }: Props) {
                         <select
                             className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
                             value={mode}
-                            onChange={() => {}}
+                            onChange={(e) =>
+                                updateFeature?.("playlist", {
+                                    items: e.target.value,
+                                })
+                            }
                         >
                             <option value="all">All</option>
                             <option value="first10">First 10</option>

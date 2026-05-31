@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import { useConfig } from "../context/ConfigContext";
 import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
@@ -7,9 +8,12 @@ import { PlaylistOptionsV2 } from "../features/playlist/PlaylistOptionsV2";
 import { OutputNameOptionsV2 } from "../features/outputName/OutputNameOptionsV2";
 import { SectionsOptionsV2 } from "../features/sections/SectionsOptionsV2";
 import { PostProcessingOptionsV2 } from "../features/postProcess/PostProcessingOptionsV2";
+import { buildCommand } from "../features/command/builder";
 
 export function LayoutV2() {
-    const { config, toggleFeature } = useConfig();
+    const { config, toggleFeature, updateFeature, setUrl } = useConfig();
+    const command = useMemo(() => buildCommand(config), [config]);
+    const [copied, setCopied] = useState(false);
     const { video, audio, playlist, outputName, sections, postProcess } =
         config.features;
 
@@ -69,7 +73,11 @@ export function LayoutV2() {
                                     <input
                                         type="checkbox"
                                         checked={enabled}
-                                        onChange={() => {}}
+                                        onChange={() =>
+                                            updateFeature?.(key, {
+                                                enabled: true,
+                                            })
+                                        }
                                         className="w-3 h-3 accent-secondary"
                                     />
                                     <span
@@ -154,6 +162,7 @@ export function LayoutV2() {
                                             enabled={enabled}
                                             resolution={resolution}
                                             ext={ext}
+                                            updateFeature={updateFeature}
                                         />
                                     );
                                 case "audio":
@@ -163,6 +172,7 @@ export function LayoutV2() {
                                             enabled={enabled}
                                             format={format}
                                             quality={quality}
+                                            updateFeature={updateFeature}
                                         />
                                     );
                                 case "playlist":
@@ -171,6 +181,7 @@ export function LayoutV2() {
                                             key={key}
                                             enabled={enabled}
                                             mode={mode}
+                                            updateFeature={updateFeature}
                                         />
                                     );
                                 case "outputName":
@@ -179,6 +190,7 @@ export function LayoutV2() {
                                             key={key}
                                             enabled={enabled}
                                             pattern={pattern}
+                                            updateFeature={updateFeature}
                                         />
                                     );
                                 case "sections":
@@ -187,6 +199,7 @@ export function LayoutV2() {
                                             key={key}
                                             enabled={enabled}
                                             sections={sections}
+                                            updateFeature={updateFeature}
                                         />
                                     );
                                 case "postProcess":
@@ -195,6 +208,7 @@ export function LayoutV2() {
                                             key={key}
                                             enabled={enabled}
                                             ffmpeg={ffmpeg}
+                                            updateFeature={updateFeature}
                                         />
                                     );
                                 default:
@@ -219,6 +233,8 @@ export function LayoutV2() {
                                 type="text"
                                 placeholder="https://example.com/video"
                                 className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
+                                value={config.url}
+                                onChange={(e) => setUrl(e.target.value)}
                             />
                         </div>
                         {/* Output */}
@@ -227,17 +243,23 @@ export function LayoutV2() {
                                 Output Command
                             </label>
                             <div className="flex-1 bg-surface border border-border rounded-sm p-3 text-xs font-mono overflow-auto">
-                                <span className="text-text-muted">
-                                    # Enable options above and click Generate
-                                </span>
+                                <span className="text-text">$ {command}</span>
                             </div>
                             <div className="mt-2">
                                 <Button
                                     variant="primary"
                                     size="sm"
                                     className="w-full"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(command);
+                                        setCopied(true);
+                                        setTimeout(
+                                            () => setCopied(false),
+                                            2000,
+                                        );
+                                    }}
                                 >
-                                    Generate Command
+                                    {copied ? "Copied!" : "Copy Command"}
                                 </Button>
                             </div>
                         </div>
