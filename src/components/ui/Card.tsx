@@ -9,13 +9,13 @@ interface CardProps {
 
 export function Card({ children, className = '', title, onClick }: CardProps) {
   return (
-    <div 
-      className={`glass-panel rounded-lg p-6 ${className}`}
+    <div
+      className={`glass-panel rounded-md p-4 ${className}`}
       onClick={onClick}
     >
       {title && (
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-primary">{title}</h3>
+        <div className="mb-3">
+          <h3 className="text-base font-semibold text-primary">{title}</h3>
         </div>
       )}
       {children}
