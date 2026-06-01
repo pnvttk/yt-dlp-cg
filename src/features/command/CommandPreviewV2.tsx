@@ -1,5 +1,5 @@
-import { Card } from "../../components/ui/Card";
-import { Button } from "../../components/ui/Button";
+import { Card } from '../../components/ui/Card'
+import { Button } from '../../components/ui/Button'
 
 export function CommandPreviewV2() {
     return (
@@ -34,5 +34,5 @@ export function CommandPreviewV2() {
                 </div>
             </div>
         </Card>
-    );
+    )
 }

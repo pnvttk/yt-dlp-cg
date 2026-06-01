@@ -5,27 +5,27 @@
 @tailwind utilities;
 
 @layer base {
-	:root {
-		/* RGB values for opacity support */
-		--background: 5 5 5;
-		--surface: 18 18 18;
-		--primary: 0 255 65;
-		/* Hacker Green */
-		--primary-hover: 0 204 51;
-		--secondary: 0 184 255;
-		/* Cyber Blue */
-		--text: 224 224 224;
-		--text-muted: 136 136 136;
-		--border: 51 51 51;
-	}
+    :root {
+        /* RGB values for opacity support */
+        --background: 5 5 5;
+        --surface: 18 18 18;
+        --primary: 0 255 65;
+        /* Hacker Green */
+        --primary-hover: 0 204 51;
+        --secondary: 0 184 255;
+        /* Cyber Blue */
+        --text: 224 224 224;
+        --text-muted: 136 136 136;
+        --border: 51 51 51;
+    }
 
-	body {
-		@apply bg-background text-text font-sans antialiased;
-	}
+    body {
+        @apply bg-background text-text font-sans antialiased;
+    }
 }
 
 @layer utilities {
-	.glass-panel {
-		@apply bg-surface/80 backdrop-blur-md border border-border;
-	}
+    .glass-panel {
+        @apply bg-surface/80 backdrop-blur-md border border-border;
+    }
 }
