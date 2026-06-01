@@ -1,293 +1,73 @@
-import { useEffect, useState } from 'react'
-import { Card } from '../../components/ui/Card'
-import { Button } from '../../components/ui/Button'
-import { useConfig } from '../../context/ConfigContext'
+import { Button, CardV2 } from '@/components/ui'
 
-interface Section {
-    id: string
-    start: string
-}
+import { SectionInputs, TextAreaInput } from './components'
 
-interface Props {
-    enabled?: boolean
-    mode?: 'ui' | 'text'
-    sections?: Section[]
-    textInput?: string
-    updateFeature?: (key: string, value: any) => void
-}
+import useSectionsOptionsV2, {
+    type SectionsOptionsV2Props,
+} from './hooks/useSectionsOptionsV2'
 
-function SectionInputs({
-    sections,
-    onUpdate,
-    onToggleSection,
-}: {
-    sections: Section[]
-    onUpdate: (key: string, value: any) => void
-    onToggleSection: (id: string) => void
-}) {
-    const addSection = () => {
-        onUpdate('sections', {
-            sections: [...sections, { id: crypto.randomUUID(), start: '' }],
-        })
-    }
+export function SectionsOptionsV2(props: SectionsOptionsV2Props) {
+    const {} = props
 
-    const removeSection = (id: string) => {
-        onToggleSection(id)
-    }
-
-    const updateSection = (id: string, start: string) => {
-        onUpdate('sections', {
-            sections: [...sections].map((s) =>
-                s.id === id ? { ...s, start } : s
-            ),
-        })
-    }
-
-    return (
-        <div className="flex flex-col gap-3">
-            {sections.map((section, idx) => (
-                <div
-                    key={section.id}
-                    className="flex items-center gap-3 p-3 bg-surface/50 rounded border border-border"
-                >
-                    <span className="text-xs text-text-muted w-6">
-                        #{idx + 1}
-                    </span>
-                    <input
-                        type="text"
-                        placeholder="00:00:00-00:01:00"
-                        value={section.start}
-                        onChange={(e) =>
-                            updateSection(section.id, e.target.value)
-                        }
-                        className="flex-grow bg-surface border border-border rounded p-2 text-sm focus:border-secondary focus:outline-none font-mono"
-                    />
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            removeSection(section.id)
-                        }}
-                        className="text-red-400 hover:text-red-500 text-sm font-medium"
-                        aria-label={`Remove section ${idx + 1}`}
-                    >
-                        ✕
-                    </button>
-                </div>
-            ))}
-            <Button
-                variant="secondary"
-                onClick={() => addSection()}
-                className="mt-2"
-            >
-                + Add Section
-            </Button>
-        </div>
-    )
-}
-
-function TextAreaInput({
-    value,
-    onChange,
-}: {
-    value: string
-    onChange: (val: string) => void
-}) {
-    return (
-        <textarea
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="01:50:00-01:50:55&#10;05:20:15-05:30:00"
-            className="w-full h-40 bg-surface border border-border rounded p-2 text-sm font-mono focus:border-secondary focus:outline-none"
-            rows={6}
-        />
-    )
-}
-
-export function SectionsOptionsV2({
-    enabled,
-    // mode = 'ui',
-    // sections = [],
-    textInput = '',
-}: Props) {
-    const { config, toggleFeature, updateFeature } = useConfig()
-    const { sections } = config.features
-
-    const [isFfmpegModalOpen, setIsFfmpegModalOpen] = useState(false)
-    const [ffmpegFileName, setFfmpegFileName] = useState('')
-
-    const handleOpenFfmpeg = (e: React.MouseEvent) => {
-        e.preventDefault()
-
-        let ext = 'mkv'
-        if (config.features.video.enabled) {
-            ext =
-                config.features.video.ext === 'auto'
-                    ? 'mkv'
-                    : config.features.video.ext
-        } else if (
-            config.features.audio.enabled &&
-            config.features.audio.format !== 'best'
-        ) {
-            ext = config.features.audio.format
-        } else if (
-            config.features.audio.enabled &&
-            config.features.audio.format === 'best'
-        ) {
-            ext = 'mp3'
-        }
-
-        let currentName = localStorage.getItem('yt-dlp-cg:output-name')
-        if (!currentName) {
-            currentName = `video.${ext}`
-        } else {
-            // Keep the stem, but swap the extension to match current settings
-            const lastDot = currentName.lastIndexOf('.')
-            const stem =
-                lastDot !== -1 ? currentName.substring(0, lastDot) : currentName
-            currentName = `${stem}.${ext}`
-        }
-
-        setFfmpegFileName(currentName)
-        localStorage.setItem('yt-dlp-cg:output-name', currentName)
-        setIsFfmpegModalOpen(true)
-    }
-
-    const handleConfirmFfmpeg = () => {
-        localStorage.setItem('yt-dlp-cg:output-name', ffmpegFileName)
-        setIsFfmpegModalOpen(false)
-        window.open('https://pnvttk.github.io/ffmpeg-cg/', '_blank')
-    }
-
-    useEffect(() => {
-        if (isFfmpegModalOpen) {
-            let ext = 'mkv'
-            if (config.features.video.enabled) {
-                ext =
-                    config.features.video.ext === 'auto'
-                        ? 'mkv'
-                        : config.features.video.ext
-            } else if (
-                config.features.audio.enabled &&
-                config.features.audio.format !== 'best'
-            ) {
-                ext = config.features.audio.format
-            } else if (
-                config.features.audio.enabled &&
-                config.features.audio.format === 'best'
-            ) {
-                ext = 'mp3'
-            }
-
-            const lastDot = ffmpegFileName.lastIndexOf('.')
-            const stem =
-                lastDot !== -1
-                    ? ffmpegFileName.substring(0, lastDot)
-                    : ffmpegFileName || 'video'
-            const newName = `${stem}.${ext}`
-
-            if (newName !== ffmpegFileName) {
-                setFfmpegFileName(newName)
-                localStorage.setItem('yt-dlp-cg:output-name', newName)
-            }
-        }
-    }, [
-        config.features.video.enabled,
-        config.features.video.ext,
-        config.features.audio.enabled,
-        config.features.audio.format,
+    const {
+        sections,
+        ffmpegFileName,
         isFfmpegModalOpen,
-    ])
-
-    const handleToggleSection = (id: string) => {
-        updateFeature('sections', {
-            sections: sections.sections.filter((s) => s.id !== id),
-        })
-    }
-
-    if (!sections.enabled) {
-        return (
-            <Card
-                className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer border-dashed"
-                onClick={() => toggleFeature('sections', true)}
-            >
-                <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full border border-text-muted" />
-                    <span className="font-semibold text-text-muted">
-                        Download Sections
-                    </span>
-                </div>
-            </Card>
-        )
-    }
+        updateFeature,
+        handleOpenFfmpeg,
+        setFfmpegFileName,
+        handleConfirmFfmpeg,
+        handleToggleSection,
+        setIsFfmpegModalOpen,
+    } = useSectionsOptionsV2()
 
     return (
-        <Card
-            title="Download Sections"
-            className="border-cyan-500/50 bg-cyan-500/5"
-        >
+        <CardV2 title="Download Sections">
             <div className="flex flex-col gap-2">
                 <p className="text-xs text-text-muted">
                     Download specific sections is slower than downloading the
-                    whole video, use
+                    whole video, use{' '}
                     <a
                         href="#"
                         onClick={(e) => {
                             e.stopPropagation()
                             handleOpenFfmpeg(e)
                         }}
-                        className="text-cyan-500 hover:underline"
+                        className="text-secondary hover:underline"
                     >
                         ffmpeg
-                    </a>
-                    to split the video after downloading is faster.
+                    </a>{' '}
+                    to split full video.
                 </p>
 
-                <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="checkbox"
-                        checked={enabled}
-                        onChange={(e) => {
-                            e.stopPropagation()
-                            updateFeature?.('sections', {
-                                enabled: e.target.checked,
-                            })
-                        }}
-                        className="accent-cyan-500 w-4 h-4"
-                    />
-                    <span className="text-cyan-500 font-medium">Enabled</span>
-                </label>
+                <div className="flex-row flex">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
+                        <input
+                            type="radio"
+                            name="sectionMode"
+                            checked={sections.mode === 'text'}
+                            onChange={(e) => {
+                                e.stopPropagation()
+                                updateFeature?.('sections', { mode: 'text' })
+                            }}
+                            className="accent-primary"
+                        />
+                        <span className="text-base">Text Input</span>
+                    </label>
 
-                <label className="flex items-center gap-2 cursor-pointer bg-surface p-2 rounded hover:bg-surface/80">
-                    <input
-                        type="radio"
-                        name="sectionMode"
-                        checked={sections.mode === 'ui'}
-                        onChange={() => {
-                            console.log('Updating mode to ui')
-                            updateFeature?.('sections', { mode: 'ui' })
-                        }}
-                        className="accent-cyan-500"
-                    />
-                    <span className="text-cyan-500">
-                        UI Controls (Recommended)
-                    </span>
-                </label>
-
-                <label className="flex items-center gap-2 cursor-pointer bg-surface p-2 rounded hover:bg-surface/80">
-                    <input
-                        type="radio"
-                        name="sectionMode"
-                        checked={sections.mode === 'text'}
-                        onChange={(e) => {
-                            e.stopPropagation()
-                            updateFeature?.('sections', { mode: 'text' })
-                        }}
-                        className="accent-cyan-500"
-                    />
-                    <span className="text-cyan-500">
-                        Text Input (Power Users)
-                    </span>
-                </label>
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
+                        <input
+                            type="radio"
+                            name="sectionMode"
+                            checked={sections.mode === 'ui'}
+                            onChange={() => {
+                                updateFeature?.('sections', { mode: 'ui' })
+                            }}
+                            className="accent-primary"
+                        />
+                        <span className="text-base">UI Controls</span>
+                    </label>
+                </div>
 
                 {sections.mode === 'ui' && (
                     <SectionInputs
@@ -306,15 +86,6 @@ export function SectionsOptionsV2({
                     />
                 )}
 
-                {sections.mode === 'text' && (
-                    <TextAreaInput
-                        value={textInput}
-                        onChange={(val) => {
-                            updateFeature?.('sections', { textInput: val })
-                        }}
-                    />
-                )}
-
                 <p className="text-xs text-text-muted">
                     Format:
                     <code className="bg-surface p-0.5 rounded">
@@ -324,7 +95,7 @@ export function SectionsOptionsV2({
                     <code className="bg-surface p-0.5 rounded">
                         01:50:00-01:50:55
                     </code>
-                    ){''}
+                    )
                 </p>
 
                 {isFfmpegModalOpen && (
@@ -333,25 +104,29 @@ export function SectionsOptionsV2({
                             <h3 className="text-lg font-bold text-text mb-2">
                                 Open in ffmpeg-cg
                             </h3>
+
                             <p className="text-sm text-text-muted mb-4">
                                 Confirm or edit the filename that will be passed
                                 to ffmpeg-cg.
                             </p>
+
                             <input
                                 type="text"
                                 value={ffmpegFileName}
                                 onChange={(e) => {
                                     setFfmpegFileName(e.target.value)
                                 }}
-                                className="w-full bg-black/30 border border-border rounded p-2 text-sm text-text focus:border-cyan-500 focus:outline-none mb-6"
+                                className="w-full bg-black/30 border border-border rounded p-2 text-sm text-text mb-6"
                             />
+
                             <div className="flex justify-end gap-3">
                                 <Button
-                                    variant="secondary"
+                                    variant="outline"
                                     onClick={() => setIsFfmpegModalOpen(false)}
                                 >
                                     Cancel
                                 </Button>
+
                                 <Button
                                     variant="primary"
                                     onClick={handleConfirmFfmpeg}
@@ -363,6 +138,6 @@ export function SectionsOptionsV2({
                     </div>
                 )}
             </div>
-        </Card>
+        </CardV2>
     )
 }

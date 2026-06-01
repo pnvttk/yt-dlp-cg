@@ -1,21 +1,24 @@
-import { useState, useMemo } from "react";
-import { useConfig } from "../context/ConfigContext";
-import { Card } from "../components/ui/Card";
-import { Button } from "../components/ui/Button";
-import { VideoOptionsV2 } from "../features/video/VideoOptionsV2";
-import { AudioOptionsV2 } from "../features/audio/AudioOptionsV2";
-import { PlaylistOptionsV2 } from "../features/playlist/PlaylistOptionsV2";
-import { OutputNameOptionsV2 } from "../features/outputName/OutputNameOptionsV2";
-import { SectionsOptionsV2 } from "../features/sections/SectionsOptionsV2";
-import { PostProcessingOptionsV2 } from "../features/postProcess/PostProcessingOptionsV2";
-import { buildCommand } from "../features/command/builder";
+import { useState, useMemo } from 'react'
+
+import { useConfig } from '@/context'
+import { buildCommand } from '@/features/command/builder'
+import { VideoOptionsV2 } from '@/features/video/VideoOptionsV2'
+import { AudioOptionsV2 } from '@/features/audio/AudioOptionsV2'
+import { PlaylistOptionsV2 } from '@/features/playlist/PlaylistOptionsV2'
+import { OutputNameOptionsV2 } from '@/features/outputName/OutputNameOptionsV2'
+import { SectionsOptionsV2 } from '@/features/sections/SectionsOptionsV2'
+import { PostProcessingOptionsV2 } from '@/features/postProcess/PostProcessingOptionsV2'
+
+import { Button, Card } from './ui'
 
 export function LayoutV2() {
-    const { config, toggleFeature, updateFeature, setUrl } = useConfig();
-    const command = useMemo(() => buildCommand(config), [config]);
-    const [copied, setCopied] = useState(false);
+    const { config, toggleFeature, updateFeature, setUrl } = useConfig()
     const { video, audio, playlist, outputName, sections, postProcess } =
-        config.features;
+        config.features
+
+    const command = useMemo(() => buildCommand(config), [config])
+
+    const [copied, setCopied] = useState(false)
 
     return (
         <div className="h-screen flex flex-col font-mono">
@@ -31,42 +34,42 @@ export function LayoutV2() {
                     <div className="p-3 text-xs font-semibold text-text-muted uppercase">
                         Operations
                     </div>
-                    <div className="flex-1 overflow-y-auto p-2 space-y-1">
+                    <div className="flex-1 overflow-y-auto">
                         {[
                             {
-                                key: "video",
-                                label: "Video",
+                                key: 'video',
+                                label: 'Video',
                                 enabled: video.enabled,
                             },
                             {
-                                key: "audio",
-                                label: "Audio",
+                                key: 'audio',
+                                label: 'Audio',
                                 enabled: audio.enabled,
                             },
                             {
-                                key: "playlist",
-                                label: "Playlist",
-                                enabled: playlist.enabled,
-                            },
-                            {
-                                key: "outputName",
-                                label: "Output Name",
-                                enabled: outputName.enabled,
-                            },
-                            {
-                                key: "sections",
-                                label: "Sections",
+                                key: 'sections',
+                                label: 'Sections',
                                 enabled: sections.enabled,
                             },
                             {
-                                key: "postProcess",
-                                label: "Post Process",
+                                key: 'playlist',
+                                label: 'Playlist',
+                                enabled: playlist.enabled,
+                            },
+                            {
+                                key: 'outputName',
+                                label: 'Output Name',
+                                enabled: outputName.enabled,
+                            },
+                            {
+                                key: 'postProcess',
+                                label: 'Post Process',
                                 enabled: postProcess.enabled,
                             },
                         ].map(({ key, label, enabled }) => (
                             <Card
                                 key={key}
-                                className={`cursor-pointer border ${enabled ? "border-secondary/50" : "border-dashed opacity-60 hover:opacity-100"}`}
+                                className={`cursor-pointer border ${enabled ? 'border-secondary/50' : 'border-dashed opacity-60 hover:opacity-100'}`}
                                 onClick={() => toggleFeature(key, !enabled)}
                             >
                                 <div className="flex items-center gap-2">
@@ -74,15 +77,15 @@ export function LayoutV2() {
                                         type="checkbox"
                                         checked={enabled}
                                         onChange={(e) => {
-                                            e.stopPropagation();
+                                            e.stopPropagation()
                                             updateFeature?.(key, {
                                                 enabled: e.target.checked,
-                                            });
+                                            })
                                         }}
-                                        className="w-3 h-3 accent-secondary"
+                                        className="w-3 h-3 accent-primary"
                                     />
                                     <span
-                                        className={`text-sm ${enabled ? "text-text" : "text-text-muted"}`}
+                                        className={`text-sm ${enabled ? 'text-text' : 'text-text-muted'}`}
                                     >
                                         {label}
                                     </span>
@@ -94,13 +97,14 @@ export function LayoutV2() {
 
                 {/* Center - enabled operation inputs */}
                 <main className="flex-1 flex flex-col bg-surface overflow-hidden">
-                    <div className="h-8 border-b border-border flex items-center px-3 text-xs text-text-muted">
-                        <span>Configuration</span>
+                    <div className="p-3 text-xs font-semibold text-text-muted uppercase">
+                        <span>configuration</span>
                     </div>
-                    <div className="flex-1 overflow-y-auto p-4 space-y-3">
+
+                    <div className="flex-1 overflow-y-auto">
                         {[
                             {
-                                key: "video",
+                                key: 'video',
                                 props: {
                                     enabled: video.enabled,
                                     resolution: video.resolution,
@@ -108,7 +112,7 @@ export function LayoutV2() {
                                 },
                             },
                             {
-                                key: "audio",
+                                key: 'audio',
                                 props: {
                                     enabled: audio.enabled,
                                     format: audio.format,
@@ -116,21 +120,21 @@ export function LayoutV2() {
                                 },
                             },
                             {
-                                key: "playlist",
+                                key: 'playlist',
                                 props: {
                                     enabled: playlist.enabled,
                                     mode: playlist.items,
                                 },
                             },
                             {
-                                key: "outputName",
+                                key: 'outputName',
                                 props: {
                                     enabled: outputName.enabled,
                                     pattern: outputName.name,
                                 },
                             },
                             {
-                                key: "sections",
+                                key: 'sections',
                                 props: {
                                     enabled: sections.enabled,
                                     mode: sections.mode,
@@ -139,7 +143,7 @@ export function LayoutV2() {
                                 },
                             },
                             {
-                                key: "postProcess",
+                                key: 'postProcess',
                                 props: {
                                     enabled: postProcess.enabled,
                                     embedThumbnail: postProcess.embedThumbnail,
@@ -156,9 +160,11 @@ export function LayoutV2() {
                                 format,
                                 quality,
                                 sections: sectionsObj,
-                            } = props;
+                            } = props
+                            if (!props.enabled) return null
+
                             switch (key) {
-                                case "video":
+                                case 'video':
                                     return (
                                         <VideoOptionsV2
                                             key={key}
@@ -166,8 +172,8 @@ export function LayoutV2() {
                                             ext={ext}
                                             updateFeature={updateFeature}
                                         />
-                                    );
-                                case "audio":
+                                    )
+                                case 'audio':
                                     return (
                                         <AudioOptionsV2
                                             key={key}
@@ -176,8 +182,8 @@ export function LayoutV2() {
                                             quality={Number(quality) || 0}
                                             updateFeature={updateFeature}
                                         />
-                                    );
-                                case "playlist":
+                                    )
+                                case 'playlist':
                                     return (
                                         <PlaylistOptionsV2
                                             key={key}
@@ -187,8 +193,8 @@ export function LayoutV2() {
                                             items={playlist.items}
                                             updateFeature={updateFeature}
                                         />
-                                    );
-                                case "outputName":
+                                    )
+                                case 'outputName':
                                     return (
                                         <OutputNameOptionsV2
                                             key={key}
@@ -197,8 +203,8 @@ export function LayoutV2() {
                                             sectionsEnabled={sections.enabled}
                                             updateFeature={updateFeature}
                                         />
-                                    );
-                                case "sections":
+                                    )
+                                case 'sections':
                                     return (
                                         <SectionsOptionsV2
                                             key={key}
@@ -212,8 +218,8 @@ export function LayoutV2() {
                                             }
                                             updateFeature={updateFeature}
                                         />
-                                    );
-                                case "postProcess":
+                                    )
+                                case 'postProcess':
                                     return (
                                         <PostProcessingOptionsV2
                                             key={key}
@@ -231,9 +237,9 @@ export function LayoutV2() {
                                             proxy={postProcess.proxy}
                                             updateFeature={updateFeature}
                                         />
-                                    );
+                                    )
                                 default:
-                                    return null;
+                                    return null
                             }
                         })}
                     </div>
@@ -241,15 +247,17 @@ export function LayoutV2() {
 
                 {/* Right side - URL input and output */}
                 <aside className="w-96 flex flex-col border-l border-border bg-surface">
-                    <div className="h-8 border-b border-border flex items-center px-3 text-xs text-text-muted">
+                    <div className="p-3 text-xs font-semibold text-text-muted uppercase border-b  border-border">
                         <span>Input & Output</span>
                     </div>
+
                     <div className="flex-1 flex flex-col p-4 gap-4">
                         {/* URL Input */}
                         <div>
                             <label className="block text-xs text-text-muted mb-1">
                                 URL
                             </label>
+
                             <input
                                 type="text"
                                 placeholder="https://example.com/video"
@@ -258,29 +266,29 @@ export function LayoutV2() {
                                 onChange={(e) => setUrl(e.target.value)}
                             />
                         </div>
+
                         {/* Output */}
                         <div className="flex-1 flex flex-col">
                             <label className="block text-xs text-text-muted mb-1">
                                 Output Command
                             </label>
+
                             <div className="flex-1 bg-surface border border-border rounded-sm p-3 text-xs font-mono overflow-auto">
                                 <span className="text-text">$ {command}</span>
                             </div>
+
                             <div className="mt-2">
                                 <Button
                                     variant="primary"
                                     size="sm"
                                     className="w-full"
                                     onClick={() => {
-                                        navigator.clipboard.writeText(command);
-                                        setCopied(true);
-                                        setTimeout(
-                                            () => setCopied(false),
-                                            2000,
-                                        );
+                                        navigator.clipboard.writeText(command)
+                                        setCopied(true)
+                                        setTimeout(() => setCopied(false), 2000)
                                     }}
                                 >
-                                    {copied ? "Copied!" : "Copy Command"}
+                                    {copied ? 'Copied!' : 'Copy Command'}
                                 </Button>
                             </div>
                         </div>
@@ -288,5 +296,5 @@ export function LayoutV2() {
                 </aside>
             </div>
         </div>
-    );
+    )
 }
