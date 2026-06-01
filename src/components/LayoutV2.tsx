@@ -73,11 +73,12 @@ export function LayoutV2() {
                                     <input
                                         type="checkbox"
                                         checked={enabled}
-                                        onChange={() =>
+                                        onChange={(e) => {
+                                            e.stopPropagation();
                                             updateFeature?.(key, {
-                                                enabled: true,
-                                            })
-                                        }
+                                                enabled: e.target.checked,
+                                            });
+                                        }}
                                         className="w-3 h-3 accent-secondary"
                                     />
                                     <span
@@ -132,27 +133,29 @@ export function LayoutV2() {
                                 key: "sections",
                                 props: {
                                     enabled: sections.enabled,
-                                    sections: sections.textInput,
+                                    mode: sections.mode,
+                                    sections: sections.sections,
+                                    textInput: sections.textInput,
                                 },
                             },
                             {
                                 key: "postProcess",
                                 props: {
                                     enabled: postProcess.enabled,
-                                    ffmpeg: "",
+                                    embedThumbnail: postProcess.embedThumbnail,
+                                    embedMetadata: postProcess.embedMetadata,
+                                    embedSubs: postProcess.embedSubs,
+                                    subtitleLangs: postProcess.subtitleLangs,
+                                    proxy: postProcess.proxy,
                                 },
                             },
                         ].map(({ key, props }) => {
                             const {
                                 enabled,
-                                resolution,
                                 ext,
                                 format,
                                 quality,
-                                mode,
-                                pattern,
-                                sections,
-                                ffmpeg,
+                                sections: sectionsObj,
                             } = props;
                             switch (key) {
                                 case "video":
@@ -160,7 +163,6 @@ export function LayoutV2() {
                                         <VideoOptionsV2
                                             key={key}
                                             enabled={enabled}
-                                            resolution={resolution}
                                             ext={ext}
                                             updateFeature={updateFeature}
                                         />
@@ -171,7 +173,7 @@ export function LayoutV2() {
                                             key={key}
                                             enabled={enabled}
                                             format={format}
-                                            quality={quality}
+                                            quality={Number(quality) || 0}
                                             updateFeature={updateFeature}
                                         />
                                     );
@@ -180,7 +182,9 @@ export function LayoutV2() {
                                         <PlaylistOptionsV2
                                             key={key}
                                             enabled={enabled}
-                                            mode={mode}
+                                            startIndex={playlist.startIndex}
+                                            endIndex={playlist.endIndex}
+                                            items={playlist.items}
                                             updateFeature={updateFeature}
                                         />
                                     );
@@ -189,7 +193,8 @@ export function LayoutV2() {
                                         <OutputNameOptionsV2
                                             key={key}
                                             enabled={enabled}
-                                            pattern={pattern}
+                                            name={outputName.name}
+                                            sectionsEnabled={sections.enabled}
                                             updateFeature={updateFeature}
                                         />
                                     );
@@ -198,7 +203,13 @@ export function LayoutV2() {
                                         <SectionsOptionsV2
                                             key={key}
                                             enabled={enabled}
-                                            sections={sections}
+                                            mode={(sectionsObj as any).mode}
+                                            sections={
+                                                (sectionsObj as any).sections
+                                            }
+                                            textInput={
+                                                (sectionsObj as any).textInput
+                                            }
                                             updateFeature={updateFeature}
                                         />
                                     );
@@ -207,7 +218,17 @@ export function LayoutV2() {
                                         <PostProcessingOptionsV2
                                             key={key}
                                             enabled={enabled}
-                                            ffmpeg={ffmpeg}
+                                            embedThumbnail={
+                                                postProcess.embedThumbnail
+                                            }
+                                            embedMetadata={
+                                                postProcess.embedMetadata
+                                            }
+                                            embedSubs={postProcess.embedSubs}
+                                            subtitleLangs={
+                                                postProcess.subtitleLangs
+                                            }
+                                            proxy={postProcess.proxy}
                                             updateFeature={updateFeature}
                                         />
                                     );

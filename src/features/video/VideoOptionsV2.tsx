@@ -1,23 +1,21 @@
 import { Card } from "../../components/ui/Card";
+import { useConfig } from "../../context/ConfigContext";
 
 interface Props {
     enabled?: boolean;
-    resolution?: string;
     ext?: string;
     updateFeature?: (key: string, value: any) => void;
+    toggleFeature?: (key: string, value: any) => void;
 }
 
-export function VideoOptionsV2({
-    enabled,
-    resolution,
-    ext,
-    updateFeature,
-}: Props) {
+export function VideoOptionsV2({ enabled, ext = "auto" }: Props) {
+    const { updateFeature, toggleFeature } = useConfig();
+
     if (!enabled) {
         return (
             <Card
                 className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer border-dashed"
-                onClick={() => {}}
+                onClick={() => toggleFeature?.("video", true)}
             >
                 <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full border border-text-muted" />
@@ -30,54 +28,50 @@ export function VideoOptionsV2({
     }
 
     return (
-        <Card title="Video" className="border-secondary/50 bg-secondary/5">
-            <div className="space-y-3">
+        <Card title="Video Options" className="border-secondary/50 bg-secondary/5">
+            <div className="flex flex-col gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
                         type="checkbox"
                         checked={enabled}
-                        onChange={() =>
-                            updateFeature?.("video", { enabled: true })
-                        }
-                        className="w-4 h-4 accent-secondary"
+                        onChange={(e) => {
+                            e.stopPropagation();
+                            updateFeature?.("video", { enabled: e.target.checked });
+                        }}
+                        className="accent-secondary w-4 h-4"
                     />
-                    <span className="text-sm text-secondary">Enabled</span>
+                    <span className="text-secondary font-medium">Enabled</span>
                 </label>
+
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-xs text-text-muted mb-1">
-                            Resolution
-                        </label>
+                        <label className="block text-sm text-text-muted mb-1">Resolution Limit</label>
                         <select
-                            className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
-                            value={resolution}
-                            onChange={(e) =>
-                                updateFeature?.("video", {
-                                    resolution: e.target.value,
-                                })
-                            }
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-secondary focus:outline-none"
+                            value={ext}
+                            onChange={(e) => {
+                                e.stopPropagation();
+                                updateFeature?.("video", { ext: e.target.value as any });
+                            }}
                         >
-                            <option value="best">Best Available</option>
-                            <option value="4k">4K (2160p)</option>
-                            <option value="1080p">1080p</option>
-                            <option value="720p">720p</option>
-                            <option value="480p">480p</option>
+                            <option value="best">Best Available (Default)</option>
+                            <option value="4k">Up to 4K (2160p)</option>
+                            <option value="1080p">Up to 1080p</option>
+                            <option value="720p">Up to 720p</option>
+                            <option value="480p">Up to 480p</option>
                         </select>
                     </div>
                     <div>
-                        <label className="block text-xs text-text-muted mb-1">
-                            Container
-                        </label>
+                        <label className="block text-sm text-text-muted mb-1">Container / Ext</label>
                         <select
-                            className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-secondary focus:outline-none"
                             value={ext}
-                            onChange={(e) =>
-                                updateFeature?.("video", {
-                                    ext: e.target.value,
-                                })
-                            }
+                            onChange={(e) => {
+                                e.stopPropagation();
+                                updateFeature?.("video", { ext: e.target.value as any });
+                            }}
                         >
-                            <option value="auto">Auto</option>
+                            <option value="auto">Auto (Default)</option>
                             <option value="mp4">MP4</option>
                             <option value="mkv">MKV</option>
                             <option value="webm">WebM</option>

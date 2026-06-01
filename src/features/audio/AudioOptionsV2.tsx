@@ -1,28 +1,27 @@
 import { Card } from "../../components/ui/Card";
+import { useConfig } from "../../context/ConfigContext";
 
 interface Props {
     enabled?: boolean;
     format?: string;
-    quality?: string | number;
+    quality?: number;
     updateFeature?: (key: string, value: any) => void;
+    toggleFeature?: (key: string, value: any) => void;
 }
 
-export function AudioOptionsV2({
-    enabled,
-    format,
-    quality,
-    updateFeature,
-}: Props) {
+export function AudioOptionsV2({ enabled, format = "best", quality = 0 }: Props) {
+    const { updateFeature, toggleFeature } = useConfig();
+
     if (!enabled) {
         return (
             <Card
                 className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer border-dashed"
-                onClick={() => {}}
+                onClick={() => toggleFeature?.("audio", true)}
             >
                 <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full border border-text-muted" />
                     <span className="font-semibold text-text-muted">
-                        Enable Audio
+                        Enable Audio Extraction
                     </span>
                 </div>
             </Card>
@@ -30,54 +29,50 @@ export function AudioOptionsV2({
     }
 
     return (
-        <Card title="Audio" className="border-primary/50 bg-primary/5">
-            <div className="space-y-3">
+        <Card title="Audio Extraction" className="border-primary/50 bg-primary/5">
+            <div className="flex flex-col gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
                         type="checkbox"
                         checked={enabled}
-                        onChange={() =>
-                            updateFeature?.("audio", { enabled: true })
-                        }
-                        className="w-4 h-4 accent-primary"
+                        onChange={(e) => {
+                            e.stopPropagation();
+                            updateFeature?.("audio", { enabled: e.target.checked });
+                        }}
+                        className="accent-primary w-4 h-4"
                     />
-                    <span className="text-sm text-primary">Enabled</span>
+                    <span className="text-primary font-medium">Enabled</span>
                 </label>
+
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-xs text-text-muted mb-1">
-                            Format
-                        </label>
+                        <label className="block text-sm text-text-muted mb-1">Format</label>
                         <select
-                            className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-primary focus:outline-none font-mono"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
                             value={format}
-                            onChange={(e) =>
-                                updateFeature?.("audio", {
-                                    format: e.target.value,
-                                })
-                            }
+                            onChange={(e) => {
+                                e.stopPropagation();
+                                updateFeature?.("audio", { format: e.target.value as any });
+                            }}
                         >
-                            <option value="best">Best</option>
+                            <option value="best">Best (Default)</option>
                             <option value="mp3">MP3</option>
                             <option value="m4a">M4A</option>
                             <option value="wav">WAV</option>
                         </select>
                     </div>
                     <div>
-                        <label className="block text-xs text-text-muted mb-1">
-                            Quality (0=Best)
-                        </label>
+                        <label className="block text-sm text-text-muted mb-1">Quality (0=Best, 10=Worst)</label>
                         <input
                             type="number"
                             min="0"
                             max="10"
-                            className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-primary focus:outline-none font-mono"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
                             value={quality}
-                            onChange={(e) =>
-                                updateFeature?.("audio", {
-                                    quality: e.target.value,
-                                })
-                            }
+                            onChange={(e) => {
+                                e.stopPropagation();
+                                updateFeature?.("audio", { quality: e.target.value });
+                            }}
                         />
                     </div>
                 </div>
