@@ -1,7 +1,13 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 export default defineConfig({
-	base: './', // Ensures assets are linked relative to index.html, needed for GitHub Pages
-	plugins: [react()],
-});
+    base: './',
+    plugins: [react()],
+    resolve: {
+        alias: {
+            '@': resolve(__dirname, 'src'),
+        },
+    },
+})
