@@ -25,8 +25,8 @@ export function Button({
     }
 
     const sizes = {
-        sm: 'h-6 px-2 text-xs',
-        md: 'h-7 px-3 text-xs',
+        sm: 'h-6 px-2 text-sm',
+        md: 'h-7 px-3 text-sm',
         lg: 'h-9 px-4 text-sm',
     }
 

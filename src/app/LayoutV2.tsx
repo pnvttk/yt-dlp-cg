@@ -7,6 +7,7 @@ import { buildOperations, buildCommand } from '@/entities/config'
 import { Button } from '@/shared/ui'
 import { Operation } from '@/widgets'
 import { ThemeSelector } from '@/shared/ui/ThemeSelector'
+import { useCopyCommandShortcut } from '@/features/command/hooks'
 
 export function LayoutV2() {
     const { config, toggleFeature, setUrl } = useConfig()
@@ -18,6 +19,14 @@ export function LayoutV2() {
         () => buildOperations(config.features),
         [config.features]
     )
+
+    useCopyCommandShortcut({
+        command,
+        onCopied: () => {
+            setCopied(true)
+            setTimeout(() => setCopied(false), 2000)
+        },
+    })
 
     return (
         <div className="h-screen flex flex-col font-mono">
@@ -123,7 +132,8 @@ export function LayoutV2() {
                                         setTimeout(() => setCopied(false), 2000)
                                     }}
                                 >
-                                    {copied ? 'Copied!' : 'Copy Command'}
+                                    {copied ? 'Copied!' : 'Ctrl/Cmd +Shift + C'}
+
                                 </Button>
                             </div>
                         </div>
