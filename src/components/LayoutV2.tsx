@@ -1,24 +1,22 @@
 import { useState, useMemo } from 'react'
 
 import { useConfig } from '@/context'
+
 import { buildCommand } from '@/features/command/builder'
-import { VideoOptionsV2 } from '@/features/video/VideoOptionsV2'
-import { AudioOptionsV2 } from '@/features/audio/AudioOptionsV2'
-import { PlaylistOptionsV2 } from '@/features/playlist/PlaylistOptionsV2'
-import { OutputNameOptionsV2 } from '@/features/outputName/OutputNameOptionsV2'
-import { SectionsOptionsV2 } from '@/features/sections/SectionsOptionsV2'
-import { PostProcessingOptionsV2 } from '@/features/postProcess/PostProcessingOptionsV2'
+import { buildOperations } from '@/features/operations/Operations'
 
 import { Button, Operation } from './ui'
 
 export function LayoutV2() {
-    const { config, toggleFeature, updateFeature, setUrl } = useConfig()
-    const { video, audio, playlist, outputName, sections, postProcess } =
-        config.features
-
+    const { config, toggleFeature, setUrl } = useConfig()
     const command = useMemo(() => buildCommand(config), [config])
 
     const [copied, setCopied] = useState(false)
+
+    const operations = useMemo(
+        () => buildOperations(config.features),
+        [config.features]
+    )
 
     return (
         <div className="h-screen flex flex-col font-mono">
@@ -35,38 +33,7 @@ export function LayoutV2() {
                         Operations
                     </div>
                     <div className="flex-1 overflow-y-auto">
-                        {[
-                            {
-                                key: 'video',
-                                label: 'Video',
-                                enabled: video.enabled,
-                            },
-                            {
-                                key: 'audio',
-                                label: 'Audio',
-                                enabled: audio.enabled,
-                            },
-                            {
-                                key: 'sections',
-                                label: 'Sections',
-                                enabled: sections.enabled,
-                            },
-                            {
-                                key: 'playlist',
-                                label: 'Playlist',
-                                enabled: playlist.enabled,
-                            },
-                            {
-                                key: 'outputName',
-                                label: 'Output Name',
-                                enabled: outputName.enabled,
-                            },
-                            {
-                                key: 'postProcess',
-                                label: 'Post Process',
-                                enabled: postProcess.enabled,
-                            },
-                        ].map(({ key, label, enabled }) => (
+                        {operations.map(({ key, label, enabled }) => (
                             <Operation
                                 key={key}
                                 className={`cursor-pointer border ${enabled ? 'border-secondary/50' : 'border-dashed opacity-60 hover:opacity-100'}`}
@@ -78,9 +45,7 @@ export function LayoutV2() {
                                         checked={enabled}
                                         onChange={(e) => {
                                             e.stopPropagation()
-                                            updateFeature?.(key, {
-                                                enabled: e.target.checked,
-                                            })
+                                            toggleFeature(key, e.target.checked)
                                         }}
                                         className="w-3 h-3 accent-primary"
                                     />
@@ -102,114 +67,9 @@ export function LayoutV2() {
                     </div>
 
                     <div className="flex-1 overflow-y-auto">
-                        {[
-                            {
-                                key: 'video',
-                                props: {
-                                    enabled: video.enabled,
-                                    ext: video.ext,
-                                },
-                            },
-                            {
-                                key: 'audio',
-                                props: {
-                                    enabled: audio.enabled,
-                                    format: audio.format,
-                                    quality: Number(audio.quality) || 0,
-                                },
-                            },
-                            {
-                                key: 'playlist',
-                                props: {
-                                    enabled: playlist.enabled,
-                                    startIndex: playlist.startIndex,
-                                    endIndex: playlist.endIndex,
-                                    items: playlist.items,
-                                },
-                            },
-                            {
-                                key: 'outputName',
-                                props: {
-                                    enabled: outputName.enabled,
-                                    name: outputName.name,
-                                    sectionsEnabled: sections.enabled,
-                                },
-                            },
-                            {
-                                key: 'sections',
-                                props: {
-                                    enabled: sections.enabled,
-                                    sections: sections.sections,
-                                    textInput: sections.textInput,
-                                },
-                            },
-                            {
-                                key: 'postProcess',
-                                props: {
-                                    enabled: postProcess.enabled,
-                                    embedThumbnail: postProcess.embedThumbnail,
-                                    embedMetadata: postProcess.embedMetadata,
-                                    embedSubs: postProcess.embedSubs,
-                                    subtitleLangs: postProcess.subtitleLangs,
-                                    proxy: postProcess.proxy,
-                                },
-                            },
-                        ].map(({ key, props }) => {
-                            if (!props.enabled) return null
-
-                            switch (key) {
-                                case 'video':
-                                    return (
-                                        <VideoOptionsV2
-                                            key={key}
-                                            {...props}
-                                            updateFeature={updateFeature}
-                                        />
-                                    )
-                                case 'audio':
-                                    return (
-                                        <AudioOptionsV2
-                                            key={key}
-                                            {...props}
-                                            updateFeature={updateFeature}
-                                        />
-                                    )
-                                case 'playlist':
-                                    return (
-                                        <PlaylistOptionsV2
-                                            key={key}
-                                            {...props}
-                                            updateFeature={updateFeature}
-                                        />
-                                    )
-                                case 'outputName':
-                                    return (
-                                        <OutputNameOptionsV2
-                                            key={key}
-                                            {...props}
-                                            updateFeature={updateFeature}
-                                        />
-                                    )
-                                case 'sections':
-                                    return (
-                                        <SectionsOptionsV2
-                                            key={key}
-                                            {...props}
-                                            updateFeature={updateFeature}
-                                        />
-                                    )
-                                case 'postProcess':
-                                    return (
-                                        <PostProcessingOptionsV2
-                                            key={key}
-                                            {...props}
-                                            updateFeature={updateFeature}
-                                        />
-                                    )
-                                default:
-                                    return null
-                            }
-                        })}
+                        {operations.map(({ key, enabled, render }) =>
+                            enabled ? <div key={key}>{render()}</div> : null
+                        )}
                     </div>
                 </main>
 

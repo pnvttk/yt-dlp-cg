@@ -2,19 +2,11 @@ import { CardV2 } from '@/components/ui'
 
 import { useConfig } from '@/context'
 
-type Props = {
-    enabled?: boolean
-    startIndex?: number
-    endIndex?: number | null
-    items?: string
-    updateFeature?: (key: string, value: any) => void
-    toggleFeature?: (key: string, value: any) => void
-}
+import type { PlaylistConfig } from '@/types'
 
-export function PlaylistOptionsV2(props: Props) {
-    const { startIndex = 0, endIndex = null, items = '' } = props
-
-    const { updateFeature } = useConfig()
+export function PlaylistOptionsV2() {
+    const { config, updateFeature } = useConfig()
+    const { startIndex, endIndex, items } = config.features.playlist
 
     const handleRangeChange = (type: 'start' | 'end', val: string) => {
         const num = parseInt(val)

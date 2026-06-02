@@ -2,15 +2,6 @@ import { useEffect, useState } from 'react'
 
 import { useConfig } from '@/context'
 
-import type { Section } from '@/types'
-
-export type SectionsOptionsV2Props = {
-    enabled?: boolean
-    mode?: 'ui' | 'text'
-    sections?: Section[]
-    textInput?: string
-    updateFeature?: (key: string, value: any) => void
-}
 export default function useSectionsOptionsV2() {
     const { config, updateFeature } = useConfig()
     const { sections } = config.features
@@ -101,20 +92,40 @@ export default function useSectionsOptionsV2() {
         isFfmpegModalOpen,
     ])
 
-    const handleToggleSection = (id: string) => {
+   const addSection = () => {
+        updateFeature('sections', {
+            sections: [
+                ...sections.sections,
+                { id: crypto.randomUUID(), start: '' },
+            ],
+        })
+    }
+
+    const removeSection = (id: string) => {
         updateFeature('sections', {
             sections: sections.sections.filter((s) => s.id !== id),
         })
     }
+
+    const updateSection = (id: string, start: string) => {
+        updateFeature('sections', {
+            sections: sections.sections.map((s) =>
+                s.id === id ? { ...s, start } : s
+            ),
+        })
+    }
+
     return {
         sections,
         ffmpegFileName,
         isFfmpegModalOpen,
+        addSection,
+        removeSection,
+        updateSection,
         updateFeature,
         handleOpenFfmpeg,
         setFfmpegFileName,
         handleConfirmFfmpeg,
-        handleToggleSection,
         setIsFfmpegModalOpen,
     }
 }

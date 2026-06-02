@@ -2,17 +2,11 @@ import { CardV2 } from '@/components/ui'
 
 import { useConfig } from '@/context'
 
-type Props = {
-    enabled?: boolean
-    ext?: string
-    updateFeature?: (key: string, value: any) => void
-    toggleFeature?: (key: string, value: any) => void
-}
+import type { VideoConfig } from '@/types'
 
-export function VideoOptionsV2(props: Props) {
-    const { ext = 'auto' } = props
-
-    const { updateFeature } = useConfig()
+export function VideoOptionsV2() {
+    const { config, updateFeature } = useConfig()
+    const { resolution, ext } = config.features.video
 
     return (
         <CardV2 title="Video Options">
@@ -24,11 +18,12 @@ export function VideoOptionsV2(props: Props) {
                         </label>
                         <select
                             className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
-                            value={ext}
+                            value={resolution}
                             onChange={(e) => {
                                 e.stopPropagation()
                                 updateFeature?.('video', {
-                                    ext: e.target.value as any,
+                                    resolution: e.target
+                                        .value as VideoConfig['resolution'],
                                 })
                             }}
                         >
@@ -51,7 +46,7 @@ export function VideoOptionsV2(props: Props) {
                             onChange={(e) => {
                                 e.stopPropagation()
                                 updateFeature?.('video', {
-                                    ext: e.target.value as any,
+                                    ext: e.target.value as VideoConfig['ext'],
                                 })
                             }}
                         >

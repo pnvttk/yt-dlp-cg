@@ -60,6 +60,7 @@ export type PostProcessConfig = {
 export type OutputNameConfig = {
     enabled: boolean
     name: string
+    sectionsEnabled: boolean
 }
 
 export const initialConfig: GlobalConfig = {
@@ -78,6 +79,6 @@ export const initialConfig: GlobalConfig = {
             subtitleLangs: '',
             proxy: '',
         },
-        outputName: { enabled: false, name: '' },
+        outputName: { enabled: false, name: '', sectionsEnabled: false },
     },
 }

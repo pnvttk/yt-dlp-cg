@@ -1,23 +1,23 @@
 import { Button, CardV2 } from '@/components/ui'
 
-import { SectionInputs, TextAreaInput } from './components'
+import { SectionInputsV2, TextAreaInput } from './components'
 
-import useSectionsOptionsV2, {
-    type SectionsOptionsV2Props,
-} from './hooks/useSectionsOptionsV2'
+import useSectionsOptionsV2 from './hooks/useSectionsOptionsV2'
 
-export function SectionsOptionsV2(props: SectionsOptionsV2Props) {
-    const {} = props
+import type { SectionsConfig } from '@/types'
 
+export function SectionsOptionsV2() {
     const {
         sections,
         ffmpegFileName,
         isFfmpegModalOpen,
+        addSection,
+        removeSection,
+        updateSection,
         updateFeature,
         handleOpenFfmpeg,
         setFfmpegFileName,
         handleConfirmFfmpeg,
-        handleToggleSection,
         setIsFfmpegModalOpen,
     } = useSectionsOptionsV2()
 
@@ -70,10 +70,11 @@ export function SectionsOptionsV2(props: SectionsOptionsV2Props) {
                 </div>
 
                 {sections.mode === 'ui' && (
-                    <SectionInputs
+                    <SectionInputsV2
                         sections={sections.sections}
-                        onUpdate={updateFeature}
-                        onToggleSection={handleToggleSection}
+                        onAdd={addSection}
+                        onRemove={removeSection}
+                        onUpdate={updateSection}
                     />
                 )}
 

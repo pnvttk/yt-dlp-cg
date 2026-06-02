@@ -36,7 +36,7 @@ const getInitialState = (): GlobalConfig => {
     return initialConfig
 }
 
-interface ConfigContextType {
+export type ConfigContextType = {
     config: GlobalConfig
     updateConfig: (updater: (prev: GlobalConfig) => GlobalConfig) => void
     setUrl: (url: string) => void

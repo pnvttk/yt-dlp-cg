@@ -2,23 +2,15 @@ import { CardV2 } from '@/components/ui'
 
 import { useConfig } from '@/context'
 
-type Props = {
-    enabled?: boolean
-    name?: string
-    sectionsEnabled?: boolean
-    updateFeature?: (key: string, value: any) => void
-    toggleFeature?: (key: string, value: any) => void
-}
+import type { OutputNameConfig } from '@/types'
 
-export function OutputNameOptionsV2(props: Props) {
-    const { name = 'my-video', sectionsEnabled = false } = props
-
+export function OutputNameOptionsV2() {
     const { updateFeature, config } = useConfig()
-    const { video, audio } = config.features
+    const { video, audio, sections, outputName } = config.features
 
     // Determine the extension to show to the user (same logic as V1)
     let extShow: string = 'mkv'
-    if (!sectionsEnabled) {
+    if (!sections.enabled) {
         if (video.enabled) {
             extShow = video.ext === 'auto' ? 'mkv' : video.ext
         } else if (audio.enabled && audio.format !== 'best') {
@@ -31,7 +23,7 @@ export function OutputNameOptionsV2(props: Props) {
     return (
         <CardV2 title="Output Name">
             <div className="flex flex-col gap-4">
-                {sectionsEnabled && (
+                {sections.enabled && (
                     <div className="text-sm text-yellow-500 bg-yellow-500/10 p-2 rounded">
                         Output name disabled &mdash; Sections mode controls the
                         filename.
@@ -42,7 +34,7 @@ export function OutputNameOptionsV2(props: Props) {
                     <label className="block text-sm text-text-muted mb-1">
                         Filename Stem will be saved as{' '}
                         <code>
-                            {name || 'name'}.{extShow}
+                            {outputName.name || 'name'}.{extShow}
                         </code>
                     </label>
 
@@ -50,14 +42,14 @@ export function OutputNameOptionsV2(props: Props) {
                         type="text"
                         placeholder="e.g. my-video"
                         className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
-                        value={name}
+                        value={outputName.name}
                         onChange={(e) => {
                             e.stopPropagation()
                             updateFeature?.('outputName', {
                                 name: e.target.value,
                             })
                         }}
-                        disabled={sectionsEnabled}
+                        disabled={sections.enabled}
                     />
                 </div>
             </div>

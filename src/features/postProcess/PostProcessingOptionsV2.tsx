@@ -2,27 +2,10 @@ import { CardV2 } from '@/components/ui'
 
 import { useConfig } from '@/context'
 
-type Props = {
-    enabled?: boolean
-    embedThumbnail?: boolean
-    embedMetadata?: boolean
-    embedSubs?: boolean
-    subtitleLangs?: string
-    proxy?: string
-    updateFeature?: (key: string, value: any) => void
-    toggleFeature?: (key: string, value: any) => void
-}
-
-export function PostProcessingOptionsV2(props: Props) {
-    const {
-        embedThumbnail = false,
-        embedMetadata = false,
-        embedSubs = false,
-        subtitleLangs = '',
-        proxy = '',
-    } = props
-
-    const { updateFeature } = useConfig()
+export function PostProcessingOptionsV2() {
+    const { config, updateFeature } = useConfig()
+    const { embedThumbnail, embedMetadata, embedSubs, subtitleLangs, proxy } =
+        config.features.postProcess
 
     return (
         <CardV2 title="Post Processing & Metadata">

@@ -2,18 +2,11 @@ import { CardV2 } from '@/components/ui'
 
 import { useConfig } from '@/context'
 
-type Props = {
-    enabled?: boolean
-    format?: string
-    quality?: number
-    updateFeature?: (key: string, value: any) => void
-    toggleFeature?: (key: string, value: any) => void
-}
+import type { AudioConfig } from '@/types'
 
-export function AudioOptionsV2(props: Props) {
-    const { format = 'best', quality = 0 } = props
-
-    const { updateFeature } = useConfig()
+export function AudioOptionsV2() {
+    const { config, updateFeature } = useConfig()
+    const { format, quality } = config.features.audio
 
     return (
         <CardV2 title="Audio Extraction">
@@ -29,7 +22,8 @@ export function AudioOptionsV2(props: Props) {
                             onChange={(e) => {
                                 e.stopPropagation()
                                 updateFeature?.('audio', {
-                                    format: e.target.value as any,
+                                    format: e.target
+                                        .value as AudioConfig['format'],
                                 })
                             }}
                         >
@@ -52,7 +46,8 @@ export function AudioOptionsV2(props: Props) {
                             onChange={(e) => {
                                 e.stopPropagation()
                                 updateFeature?.('audio', {
-                                    quality: e.target.value,
+                                    quality: e.target
+                                        .value as AudioConfig['quality'],
                                 })
                             }}
                         />
