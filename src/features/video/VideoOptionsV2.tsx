@@ -13,7 +13,7 @@ export function VideoOptionsV2() {
             <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Resolution Limit
                         </label>
                         <select
@@ -37,7 +37,7 @@ export function VideoOptionsV2() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Container / Ext
                         </label>
                         <select

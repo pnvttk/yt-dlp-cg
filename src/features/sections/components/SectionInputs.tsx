@@ -36,7 +36,7 @@ export function SectionInputs(props: Props) {
                     key={section.id}
                     className="flex items-center gap-3 p-3 bg-surface/50 border border-border"
                 >
-                    <span className="text-xs text-text-muted w-6">
+                    <span className="text-xs text-text w-6">
                         #{idx + 1}
                     </span>
 

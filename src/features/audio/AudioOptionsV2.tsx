@@ -13,7 +13,7 @@ export function AudioOptionsV2() {
             <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Format
                         </label>
                         <select
@@ -34,7 +34,7 @@ export function AudioOptionsV2() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Quality (0=Best, 10=Worst)
                         </label>
                         <input

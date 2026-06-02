@@ -24,7 +24,7 @@ export function SectionsOptionsV2() {
     return (
         <CardV2 title="Download Sections">
             <div className="flex flex-col gap-2">
-                <p className="text-xs text-text-muted">
+                <p className="text-sm text-text-muted">
                     Download specific sections is slower than downloading the
                     whole video, use{' '}
                     <a
@@ -33,15 +33,15 @@ export function SectionsOptionsV2() {
                             e.stopPropagation()
                             handleOpenFfmpeg(e)
                         }}
-                        className="text-secondary hover:underline"
+                        className="text-primary hover:underline"
                     >
                         ffmpeg
                     </a>{' '}
                     to split full video.
                 </p>
 
-                <div className="flex-row flex">
-                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
+                <div className="flex-row flex gap-2">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
                         <input
                             type="radio"
                             name="sectionMode"
@@ -55,7 +55,7 @@ export function SectionsOptionsV2() {
                         <span className="text-base">Text Input</span>
                     </label>
 
-                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
                         <input
                             type="radio"
                             name="sectionMode"
@@ -87,26 +87,14 @@ export function SectionsOptionsV2() {
                     />
                 )}
 
-                <p className="text-xs text-text-muted">
-                    Format:
-                    <code className="bg-surface p-0.5 rounded">
-                        HH:MM:SS-HH:MM:SS
-                    </code>
-                    (e.g.,
-                    <code className="bg-surface p-0.5 rounded">
-                        01:50:00-01:50:55
-                    </code>
-                    )
-                </p>
-
                 {isFfmpegModalOpen && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                         <div className="bg-surface border border-border rounded-lg shadow-xl p-6 w-full max-w-md">
-                            <h3 className="text-lg font-bold text-text mb-2">
+                            <h3 className="text-sm font-bold text-primary mb-2">
                                 Open in ffmpeg-cg
                             </h3>
 
-                            <p className="text-sm text-text-muted mb-4">
+                            <p className="text-sm text-text mb-4">
                                 Confirm or edit the filename that will be passed
                                 to ffmpeg-cg.
                             </p>

@@ -22,7 +22,7 @@ export function LayoutV2() {
     return (
         <div className="h-screen flex flex-col font-mono">
             {/* Header */}
-            <header className="h-8 bg-surface border-b border-border flex items-center px-4 text-xs">
+            <header className="h-8 bg-surface border-b border-border flex items-center pl-4 text-primary text-sm">
                 <span>yt-dlp Command Generator V2</span>
 
                 <ThemeSelector />
@@ -32,7 +32,7 @@ export function LayoutV2() {
             <div className="flex-1 flex overflow-hidden">
                 {/* Left sidebar - operations list */}
                 <aside className="w-48 flex flex-col border-r border-border bg-surface">
-                    <div className="p-3 text-xs font-semibold text-text-muted uppercase">
+                    <div className="p-3 text-sm font-semibold text-primary uppercase">
                         Operations
                     </div>
                     <div className="flex-1 overflow-y-auto">
@@ -65,7 +65,7 @@ export function LayoutV2() {
 
                 {/* Center - enabled operation inputs */}
                 <main className="flex-1 flex flex-col bg-surface overflow-hidden">
-                    <div className="p-3 text-xs font-semibold text-text-muted uppercase">
+                    <div className="p-3 text-sm font-semibold text-primary uppercase">
                         <span>configuration</span>
                     </div>
 
@@ -82,21 +82,21 @@ export function LayoutV2() {
 
                 {/* Right side - URL input and output */}
                 <aside className="w-96 flex flex-col border-l border-border bg-surface">
-                    <div className="p-3 text-xs font-semibold text-text-muted uppercase border-b  border-border">
+                    <div className="p-3 text-sm font-semibold text-primary uppercase border-b  border-border">
                         <span>Input & Output</span>
                     </div>
 
                     <div className="flex-1 flex flex-col p-4 gap-4">
                         {/* URL Input */}
                         <div>
-                            <label className="block text-xs text-text-muted mb-1">
+                            <label className="block text-sm text-primary mb-1">
                                 URL
                             </label>
 
                             <input
                                 type="text"
                                 placeholder="https://example.com/video"
-                                className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-primary focus:outline-none font-mono"
+                                className="w-full bg-surface border border-border rounded-sm p-2 text-sm focus:border-primary focus:outline-none font-mono"
                                 value={config.url}
                                 onChange={(e) => setUrl(e.target.value)}
                             />
@@ -104,11 +104,11 @@ export function LayoutV2() {
 
                         {/* Output */}
                         <div className="flex-1 flex flex-col">
-                            <label className="block text-xs text-text-muted mb-1">
+                            <label className="block text-sm text-primary mb-1">
                                 Output Command
                             </label>
 
-                            <div className="flex-1 bg-surface border border-border rounded-sm p-3 text-xs font-mono overflow-auto">
+                            <div className="flex-1 bg-surface border border-border rounded-sm p-3 text-sm font-mono overflow-auto">
                                 <span className="text-text">$ {command}</span>
                             </div>
 

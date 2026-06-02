@@ -11,7 +11,7 @@ export function PostProcessingOptionsV2() {
         <CardV2 title="Post Processing & Metadata">
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row gap-4">
-                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
                         <input
                             type="checkbox"
                             checked={embedThumbnail}
@@ -28,7 +28,7 @@ export function PostProcessingOptionsV2() {
                         </span>
                     </label>
 
-                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
                         <input
                             type="checkbox"
                             checked={embedMetadata}
@@ -46,7 +46,7 @@ export function PostProcessingOptionsV2() {
                     </label>
 
                     <div className="flex flex-col gap-2">
-                        <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
+                        <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
                             <input
                                 type="checkbox"
                                 checked={embedSubs}
@@ -68,7 +68,7 @@ export function PostProcessingOptionsV2() {
                 <div className="flex flex-row gap-4">
                     {embedSubs && (
                         <div>
-                            <label className="block text-sm text-text-muted mb-1">
+                            <label className="block text-sm text-text mb-1">
                                 Proxy URL (Optional)
                             </label>
                             <input
@@ -86,7 +86,7 @@ export function PostProcessingOptionsV2() {
                         </div>
                     )}
                     <div className="flex-1">
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Proxy URL (Optional)
                         </label>
                         <input

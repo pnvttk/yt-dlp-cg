@@ -30,7 +30,7 @@ export function PlaylistOptionsV2() {
             <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Start Index
                         </label>
                         <input
@@ -45,7 +45,7 @@ export function PlaylistOptionsV2() {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             End Index (Optional)
                         </label>
                         <input
@@ -61,8 +61,9 @@ export function PlaylistOptionsV2() {
                         />
                     </div>
                     <div className="col-span-2">
-                        <label className="block text-sm text-text-muted mb-1">
-                            Specific Items (e.g., 1,2,5-10)
+                        <label className="block text-sm text-text mb-1">
+                            Specific Items (e.g., 1,2,5-10).
+                            If set, overrides Start/End index.
                         </label>
                         <input
                             type="text"
@@ -76,9 +77,6 @@ export function PlaylistOptionsV2() {
                                 })
                             }}
                         />
-                        <p className="text-xs text-text-muted mt-1">
-                            If set, overrides Start/End index.
-                        </p>
                     </div>
                 </div>
             </div>

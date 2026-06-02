@@ -14,7 +14,7 @@ export function VideoOptions() {
             >
                 <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full border border-text-muted" />
-                    <span className="font-semibold text-text-muted">
+                    <span className="font-semibold text-text">
                         Enable Video
                     </span>
                 </div>
@@ -42,7 +42,7 @@ export function VideoOptions() {
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Resolution Limit
                         </label>
                         <select
@@ -64,7 +64,7 @@ export function VideoOptions() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm text-text-muted mb-1">
+                        <label className="block text-sm text-text mb-1">
                             Container / Ext
                         </label>
                         <select

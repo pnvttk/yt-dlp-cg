@@ -1,5 +1,8 @@
 import { Button, Card } from '@/shared/ui'
 
+/**
+ * not used, use layoutV2 instead
+ */
 export function CommandPreviewV2() {
     return (
         <Card className="border-secondary/50">
@@ -14,7 +17,7 @@ export function CommandPreviewV2() {
                     <span className="text-sm text-secondary">Show Preview</span>
                 </label>
                 <div>
-                    <label className="block text-xs text-text-muted mb-1">
+                    <label className="block text-xs text-text mb-1">
                         Command Preview
                     </label>
                     <div className="bg-surface border border-border rounded-sm p-3 text-xs font-mono overflow-auto">

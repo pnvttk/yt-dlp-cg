@@ -31,7 +31,7 @@ export function OutputNameOptionsV2() {
                 )}
 
                 <div>
-                    <label className="block text-sm text-text-muted mb-1">
+                    <label className="block text-sm text-text mb-1">
                         Filename Stem will be saved as{' '}
                         <code>
                             {outputName.name || 'name'}.{extShow}
