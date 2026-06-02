@@ -10,7 +10,7 @@ export function PostProcessingOptionsV2() {
     return (
         <CardV2 title="Post Processing & Metadata">
             <div className="flex flex-col gap-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-row gap-4">
                     <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
                         <input
                             type="checkbox"
@@ -62,12 +62,19 @@ export function PostProcessingOptionsV2() {
                                 Embed Subtitles
                             </span>
                         </label>
+                    </div>
+                </div>
 
-                        {embedSubs && (
+                <div className="flex flex-row gap-4">
+                    {embedSubs && (
+                        <div>
+                            <label className="block text-sm text-text-muted mb-1">
+                                Proxy URL (Optional)
+                            </label>
                             <input
                                 type="text"
                                 placeholder="Langs: all, en, ja..."
-                                className="ml-6 w-[85%] bg-black/20 border border-border rounded p-1.5 text-xs text-white placeholder:text-text-muted/40 focus:border-primary focus:outline-none"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none font-mono"
                                 value={subtitleLangs}
                                 onChange={(e) =>
                                     updateFeature('postProcess', {
@@ -76,25 +83,24 @@ export function PostProcessingOptionsV2() {
                                 }
                                 title="Subtitle languages (regex or comma-separated). Leave empty for default."
                             />
-                        )}
+                        </div>
+                    )}
+                    <div className="flex-1">
+                        <label className="block text-sm text-text-muted mb-1">
+                            Proxy URL (Optional)
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="http://user:pass@host:port"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none font-mono"
+                            value={proxy}
+                            onChange={(e) =>
+                                updateFeature('postProcess', {
+                                    proxy: e.target.value,
+                                })
+                            }
+                        />
                     </div>
-                </div>
-
-                <div>
-                    <label className="block text-sm text-text-muted mb-1">
-                        Proxy URL (Optional)
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="http://user:pass@host:port"
-                        className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none font-mono"
-                        value={proxy}
-                        onChange={(e) =>
-                            updateFeature('postProcess', {
-                                proxy: e.target.value,
-                            })
-                        }
-                    />
                 </div>
             </div>
         </CardV2>
