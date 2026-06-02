@@ -1,5 +1,5 @@
-import { ConfigProvider } from './context/ConfigContext'
-import { LayoutV2 } from './components/LayoutV2'
+import { LayoutV2 } from './app/LayoutV2'
+import { ConfigProvider } from './entities/config/ConfigContext'
 
 function App() {
     return (

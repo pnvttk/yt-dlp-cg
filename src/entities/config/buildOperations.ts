@@ -1,5 +1,6 @@
-import type { GlobalConfig } from '@/types'
-import { featureRegistry } from '@/shared/config/featureRegistry'
+import type { GlobalConfig } from './types'
+
+import { featureRegistry } from './featureRegistry'
 
 // helper: type-safe Object.entries
 function typedEntries<T extends Record<string, any>>(

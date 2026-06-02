@@ -1,5 +1,4 @@
-import { Card } from '../../components/ui/Card'
-import { Button } from '../../components/ui/Button'
+import { Button, Card } from '@/shared/ui'
 
 export function CommandPreviewV2() {
     return (

@@ -1,8 +1,8 @@
-import { CardV2 } from '@/components/ui'
+import { CardV2 } from '@/shared/ui'
 
-import { useConfig } from '@/context'
+import { useConfig } from '@/entities/config'
 
-import type { AudioConfig } from '@/types'
+import type { AudioConfig } from '@/entities/config'
 
 export function AudioOptionsV2() {
     const { config, updateFeature } = useConfig()

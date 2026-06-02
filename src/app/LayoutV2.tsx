@@ -1,12 +1,11 @@
 import { useState, useMemo } from 'react'
 
-import { useConfig } from '@/context'
+import { useConfig } from '@/entities/config'
 
-import { buildCommand } from '@/features/command/builder'
+import { buildOperations, buildCommand } from '@/entities/config'
 
-import { Button, Operation } from './ui'
-
-import { buildOperations } from '@/features/operations/BuildOperations'
+import { Button } from '@/shared/ui'
+import { Operation } from '@/widgets'
 
 export function LayoutV2() {
     const { config, toggleFeature, setUrl } = useConfig()

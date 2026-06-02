@@ -1,4 +1,4 @@
-import type { GlobalConfig } from '../../types'
+import type { GlobalConfig } from './types'
 
 export function buildCommand(config: GlobalConfig): string {
     if (!config.url) {
@@ -79,40 +79,23 @@ export function buildCommand(config: GlobalConfig): string {
                 parts.push(`--download-sections "*${section.start}"`)
             })
         } else if (textInput.trim()) {
-            // // Text mode: parse lines and generate flags
-            // const lines = textInput.trim().split('\n').filter((line) => line.trim());
-            // lines.forEach((line) => {
-            // 	const trimmed = line.trim();
-            // 	// Validate strict format: HH:MM:SS-HH:MM:SS
-            // 	if (/^\d{2}:\d{2}:\d{2}-\d{2}:\d{2}:\d{2}$/.test(trimmed)) {
-            // 		parts.push(`--download-sections "*${trimmed}"`);
-            // 	}
-            // });
-
-            // Text mode: parse lines and generate flags
             const lines = textInput
                 .trim()
                 .split('\n')
                 .filter((line) => line.trim())
-            // Modify the regex to capture only the time format at the beginning of the line
             lines.forEach((line) => {
                 const trimmed = line.trim()
-                // Validate format: HH:MM:SS-HH:MM:SS and allow comments or notes afterward
                 const match = /^\d{2}:\d{2}:\d{2}-\d{2}:\d{2}:\d{2}/.exec(
                     trimmed
                 )
 
                 if (match) {
-                    // Push the matched time range (first capturing group)
                     parts.push(`--download-sections "*${match[0]}"`)
                 }
             })
         }
 
-        // Force keyframes for clean cuts
         parts.push('--force-keyframes-at-cuts')
-
-        // Force output template to include section times
         parts.push('-o "[%(id)s]_%(section_start)s-%(section_end)s.%(ext)s"')
     }
 
@@ -162,7 +145,6 @@ export function buildCommand(config: GlobalConfig): string {
     }
 
     // Final: URL(s)
-    // Split by whitespace to support multiple URLs
     const urls = config.url.trim().split(/\s+/)
     urls.forEach((url) => {
         if (url) {

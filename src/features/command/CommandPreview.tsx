@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
-import { useConfig } from '../../context/ConfigContext'
-import { buildCommand } from '../command/builder'
-import { Button } from '../../components/ui/Button'
+import { useConfig } from '../../entities/config/ConfigContext'
+import { buildCommand } from '@/entities/config'
+import { Button } from '@/shared/ui'
 
 export function CommandPreview() {
     const { config } = useConfig()

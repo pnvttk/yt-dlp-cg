@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useConfig } from '@/context'
+import { useConfig } from '@/entities/config'
 
 export default function useSectionsOptionsV2() {
     const { config, updateFeature } = useConfig()
@@ -92,7 +92,7 @@ export default function useSectionsOptionsV2() {
         isFfmpegModalOpen,
     ])
 
-   const addSection = () => {
+    const addSection = () => {
         updateFeature('sections', {
             sections: [
                 ...sections.sections,

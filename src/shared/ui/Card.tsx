@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-interface CardProps {
+type CardProps = {
     children: ReactNode
     className?: string
     title?: string

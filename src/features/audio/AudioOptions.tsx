@@ -1,5 +1,6 @@
-import { useConfig } from '../../context/ConfigContext'
-import { Card } from '../../components/ui/Card'
+import { Card } from '@/shared/ui'
+
+import { useConfig } from '@/entities/config'
 
 export function AudioOptions() {
     const { config, toggleFeature, updateFeature } = useConfig()

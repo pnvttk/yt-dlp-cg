@@ -1,6 +1,6 @@
-import { CardV2 } from '@/components/ui'
+import { CardV2 } from '@/shared/ui'
 
-import { useConfig } from '@/context'
+import { useConfig } from '@/entities/config'
 
 import type { VideoConfig } from '@/types'
 

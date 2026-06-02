@@ -1,8 +1,8 @@
-import { CardV2 } from '@/components/ui'
+import { CardV2 } from '@/shared/ui'
 
-import { useConfig } from '@/context'
+import { useConfig } from '@/entities/config'
 
-import type { OutputNameConfig } from '@/types'
+import type { OutputNameConfig } from '@/entities/config'
 
 export function OutputNameOptionsV2() {
     const { updateFeature, config } = useConfig()

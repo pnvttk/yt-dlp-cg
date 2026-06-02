@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui'
+import { Button } from '@/shared/ui'
 
-import type { Section } from '@/types'
+import type { Section } from '@/entities/config'
 
 type Props = {
     sections: Section[]

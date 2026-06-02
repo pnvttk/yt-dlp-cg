@@ -1,5 +1,5 @@
-import { useConfig } from '../../context/ConfigContext'
-import { Card } from '../../components/ui/Card'
+import { useConfig } from "@/entities/config";
+import { Card } from "@/shared/ui";
 
 export function PostProcessingOptions() {
     const { config, updateFeature } = useConfig()

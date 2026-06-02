@@ -1,11 +1,11 @@
+import type { GlobalConfig } from './types'
+
 import { VideoOptionsV2 } from '@/features/video/VideoOptionsV2'
 import { AudioOptionsV2 } from '@/features/audio/AudioOptionsV2'
 import { PlaylistOptionsV2 } from '@/features/playlist/PlaylistOptionsV2'
 import { OutputNameOptionsV2 } from '@/features/outputName/OutputNameOptionsV2'
 import { SectionsOptionsV2 } from '@/features/sections/SectionsOptionsV2'
 import { PostProcessingOptionsV2 } from '@/features/postProcess/PostProcessingOptionsV2'
-
-import type { GlobalConfig } from '@/types'
 
 type FeatureKey = keyof GlobalConfig['features']
 
@@ -45,10 +45,5 @@ export const featureRegistry = {
         key: 'postProcess',
         label: 'Post Process',
         Component: PostProcessingOptionsV2,
-    },
-    range: {
-        key: 'range',
-        label: 'Range',
-        Component: SectionsOptionsV2,
     },
 } satisfies Record<FeatureKey, FeatureRegistryItem>

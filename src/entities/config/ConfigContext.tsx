@@ -6,8 +6,9 @@ import {
     type ReactNode,
 } from 'react'
 
-import { initialConfig, type GlobalConfig } from '@/types'
-import { featureRegistry } from '@/shared/config/featureRegistry'
+import { featureRegistry } from './featureRegistry'
+
+import { initialConfig, type GlobalConfig } from './types'
 
 const STORAGE_KEY = 'yt-dlp-cg:output-name'
 
@@ -41,9 +42,9 @@ export type FeatureKey = keyof typeof featureRegistry
 
 // compile-time enforcement
 type _Check =
-  keyof typeof featureRegistry extends keyof GlobalConfig["features"]
-    ? true
-    : never
+    keyof typeof featureRegistry extends keyof GlobalConfig['features']
+        ? true
+        : never
 
 export type ConfigContextType = {
     config: GlobalConfig

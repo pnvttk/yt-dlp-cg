@@ -1,5 +1,5 @@
-import { useConfig } from '../../context/ConfigContext'
-import { Card } from '../../components/ui/Card'
+import { useConfig } from '../../entities/config/ConfigContext'
+import { Card } from '../../shared/ui/Card'
 
 export function OutputNameOptions() {
     const { config, toggleFeature, updateFeature } = useConfig()

@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useConfig } from '../../context/ConfigContext'
-import { Card } from '../../components/ui/Card'
-import { Button } from '../../components/ui/Button'
+import { Card } from '@/shared/ui'
+import { Button } from '@/shared/ui'
+import { useConfig } from '@/entities/config';
 
+/**
+ * @deprecated
+ */
 export function SectionsOptions() {
     const { config, toggleFeature, updateFeature } = useConfig()
     const { sections } = config.features
@@ -175,13 +178,13 @@ export function SectionsOptions() {
                     </span>
                 </label>
 
-                {sections.mode === 'ui' && (
+                {/* {sections.mode === 'ui' && (
                     <SectionInputs
                         sections={sections.sections}
                         onUpdate={updateFeature}
                         onToggleSection={handleToggleSection}
                     />
-                )}
+                )} */}
 
                 {sections.mode === 'text' && (
                     <TextAreaInput

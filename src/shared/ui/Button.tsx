@@ -1,9 +1,9 @@
 import React from 'react'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type ButtonProps = {
     variant?: 'primary' | 'secondary' | 'ghost' | 'outline'
     size?: 'sm' | 'md' | 'lg'
-}
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 export function Button({
     children,

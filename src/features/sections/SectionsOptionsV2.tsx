@@ -1,10 +1,10 @@
-import { Button, CardV2 } from '@/components/ui'
+import { Button, CardV2 } from '@/shared/ui'
 
 import { SectionInputsV2, TextAreaInput } from './components'
 
 import useSectionsOptionsV2 from './hooks/useSectionsOptionsV2'
 
-import type { SectionsConfig } from '@/types'
+import type { SectionsConfig } from '@/entities/config'
 
 export function SectionsOptionsV2() {
     const {
