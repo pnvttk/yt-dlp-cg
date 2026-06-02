@@ -6,6 +6,7 @@ import { buildOperations, buildCommand } from '@/entities/config'
 
 import { Button } from '@/shared/ui'
 import { Operation } from '@/widgets'
+import { ThemeSelector } from '@/shared/ui/ThemeSelector'
 
 export function LayoutV2() {
     const { config, toggleFeature, setUrl } = useConfig()
@@ -23,6 +24,8 @@ export function LayoutV2() {
             {/* Header */}
             <header className="h-8 bg-surface border-b border-border flex items-center px-4 text-xs">
                 <span>yt-dlp Command Generator V2</span>
+
+                <ThemeSelector />
             </header>
 
             {/* Main 3-section layout */}
