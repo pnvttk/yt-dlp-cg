@@ -7,6 +7,7 @@ import {
 } from 'react'
 
 import { initialConfig, type GlobalConfig } from '@/types'
+import { featureRegistry } from '@/shared/config/featureRegistry'
 
 const STORAGE_KEY = 'yt-dlp-cg:output-name'
 
@@ -27,7 +28,7 @@ const getInitialState = (): GlobalConfig => {
                 ...initialConfig.features,
                 outputName: {
                     ...initialConfig.features.outputName,
-                    name: name,
+                    name,
                 },
             },
         }
@@ -36,16 +37,22 @@ const getInitialState = (): GlobalConfig => {
     return initialConfig
 }
 
+export type FeatureKey = keyof typeof featureRegistry
+
+// compile-time enforcement
+type _Check =
+  keyof typeof featureRegistry extends keyof GlobalConfig["features"]
+    ? true
+    : never
+
 export type ConfigContextType = {
     config: GlobalConfig
     updateConfig: (updater: (prev: GlobalConfig) => GlobalConfig) => void
     setUrl: (url: string) => void
-    toggleFeature: (feature: string, enabled: boolean) => void
-    updateFeature: (
-        feature: string,
-        updates: Partial<
-            GlobalConfig['features'][keyof GlobalConfig['features']]
-        >
+    toggleFeature: (feature: FeatureKey, enabled: boolean) => void
+    updateFeature: <K extends FeatureKey>(
+        feature: K,
+        updates: Partial<GlobalConfig['features'][K]>
     ) => void
 }
 
@@ -56,6 +63,7 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         let ext = 'mkv'
+
         if (config.features.video.enabled) {
             ext =
                 config.features.video.ext === 'auto'
@@ -80,8 +88,10 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
             const fullName = `${config.features.outputName.name}.${ext}`
             localStorage.setItem(STORAGE_KEY, fullName)
         } else {
-            let currentName = localStorage.getItem(STORAGE_KEY)
+            const currentName = localStorage.getItem(STORAGE_KEY)
+
             let stem = 'video'
+
             if (currentName) {
                 const lastDot = currentName.lastIndexOf('.')
                 stem =
@@ -89,6 +99,7 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
                         ? currentName.substring(0, lastDot)
                         : currentName
             }
+
             localStorage.setItem(STORAGE_KEY, `${stem}.${ext}`)
         }
     }, [
@@ -107,35 +118,29 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
         setConfig((prev) => ({ ...prev, url }))
     }
 
-    const toggleFeature = (feature: string, enabled: boolean) => {
+    const toggleFeature = (feature: FeatureKey, enabled: boolean) => {
         setConfig((prev) => ({
             ...prev,
             features: {
                 ...prev.features,
-                [feature as keyof GlobalConfig['features']]: {
-                    ...(prev.features[
-                        feature as keyof GlobalConfig['features']
-                    ] as GlobalConfig['features'][keyof GlobalConfig['features']]),
+                [feature]: {
+                    ...prev.features[feature],
                     enabled,
                 },
             },
         }))
     }
 
-    const updateFeature = (
-        feature: string,
-        updates: Partial<
-            GlobalConfig['features'][keyof GlobalConfig['features']]
-        >
+    const updateFeature = <K extends FeatureKey>(
+        feature: K,
+        updates: Partial<GlobalConfig['features'][K]>
     ) => {
         setConfig((prev) => ({
             ...prev,
             features: {
                 ...prev.features,
-                [feature as keyof GlobalConfig['features']]: {
-                    ...(prev.features[
-                        feature as keyof GlobalConfig['features']
-                    ] as GlobalConfig['features'][keyof GlobalConfig['features']]),
+                [feature]: {
+                    ...prev.features[feature],
                     ...updates,
                 },
             },

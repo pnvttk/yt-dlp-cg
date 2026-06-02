@@ -3,9 +3,10 @@ import { useState, useMemo } from 'react'
 import { useConfig } from '@/context'
 
 import { buildCommand } from '@/features/command/builder'
-import { buildOperations } from '@/features/operations/Operations'
 
 import { Button, Operation } from './ui'
+
+import { buildOperations } from '@/features/operations/BuildOperations'
 
 export function LayoutV2() {
     const { config, toggleFeature, setUrl } = useConfig()
@@ -67,8 +68,12 @@ export function LayoutV2() {
                     </div>
 
                     <div className="flex-1 overflow-y-auto">
-                        {operations.map(({ key, enabled, render }) =>
-                            enabled ? <div key={key}>{render()}</div> : null
+                        {operations.map(({ key, enabled, Component }) =>
+                            enabled ? (
+                                <div key={key}>
+                                    <Component />
+                                </div>
+                            ) : null
                         )}
                     </div>
                 </main>
