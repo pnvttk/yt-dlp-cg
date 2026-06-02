@@ -116,7 +116,7 @@ export function SectionsOptionsV2(props: SectionsOptionsV2Props) {
                                 onChange={(e) => {
                                     setFfmpegFileName(e.target.value)
                                 }}
-                                className="w-full bg-black/30 border border-border rounded p-2 text-sm text-text mb-6"
+                                className="w-full bg-black/30 border border-border rounded p-2 text-sm text-text mb-6 focus:border-primary focus:outline-none"
                             />
 
                             <div className="flex justify-end gap-3">

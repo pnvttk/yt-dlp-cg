@@ -1,7 +1,8 @@
-import { Card } from '../../components/ui/Card'
-import { useConfig } from '../../context/ConfigContext'
+import { CardV2 } from '@/components/ui'
 
-interface Props {
+import { useConfig } from '@/context'
+
+type Props = {
     enabled?: boolean
     embedThumbnail?: boolean
     embedMetadata?: boolean
@@ -12,40 +13,22 @@ interface Props {
     toggleFeature?: (key: string, value: any) => void
 }
 
-export function PostProcessingOptionsV2({
-    enabled,
-    embedThumbnail = false,
-    embedMetadata = false,
-    embedSubs = false,
-    subtitleLangs = '',
-    proxy = '',
-}: Props) {
-    const { updateFeature, toggleFeature } = useConfig()
+export function PostProcessingOptionsV2(props: Props) {
+    const {
+        embedThumbnail = false,
+        embedMetadata = false,
+        embedSubs = false,
+        subtitleLangs = '',
+        proxy = '',
+    } = props
 
-    if (!enabled) {
-        return (
-            <Card
-                className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer border-dashed"
-                onClick={() => toggleFeature?.('postProcess', true)}
-            >
-                <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full border border-text-muted" />
-                    <span className="font-semibold text-text-muted">
-                        Enable Post Process
-                    </span>
-                </div>
-            </Card>
-        )
-    }
+    const { updateFeature } = useConfig()
 
     return (
-        <Card
-            title="Post Processing & Metadata"
-            className="border-orange-500/50 bg-orange-500/5"
-        >
+        <CardV2 title="Post Processing & Metadata">
             <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
-                    <label className="flex items-center gap-2 cursor-pointer bg-surface p-2 rounded hover:bg-surface/80">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
                         <input
                             type="checkbox"
                             checked={embedThumbnail}
@@ -55,14 +38,14 @@ export function PostProcessingOptionsV2({
                                     embedThumbnail: e.target.checked,
                                 })
                             }}
-                            className="accent-orange-500 w-4 h-4"
+                            className="accent-primary"
                         />
                         <span className="text-text font-medium text-sm">
                             Embed Thumbnail
                         </span>
                     </label>
 
-                    <label className="flex items-center gap-2 cursor-pointer bg-surface p-2 rounded hover:bg-surface/80">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
                         <input
                             type="checkbox"
                             checked={embedMetadata}
@@ -72,7 +55,7 @@ export function PostProcessingOptionsV2({
                                     embedMetadata: e.target.checked,
                                 })
                             }}
-                            className="accent-orange-500 w-4 h-4"
+                            className="accent-primary"
                         />
                         <span className="text-text font-medium text-sm">
                             Add Metadata
@@ -80,7 +63,7 @@ export function PostProcessingOptionsV2({
                     </label>
 
                     <div className="flex flex-col gap-2">
-                        <label className="flex items-center gap-2 cursor-pointer bg-surface p-2 rounded hover:bg-surface/80">
+                        <label className="flex items-center gap-2 cursor-pointer bg-surface px-2 rounded hover:bg-surface/80">
                             <input
                                 type="checkbox"
                                 checked={embedSubs}
@@ -90,7 +73,7 @@ export function PostProcessingOptionsV2({
                                         embedSubs: e.target.checked,
                                     })
                                 }}
-                                className="accent-orange-500 w-4 h-4"
+                                className="accent-primary"
                             />
                             <span className="text-text font-medium text-sm">
                                 Embed Subtitles
@@ -101,7 +84,7 @@ export function PostProcessingOptionsV2({
                             <input
                                 type="text"
                                 placeholder="Langs: all, en, ja..."
-                                className="ml-6 w-[85%] bg-black/20 border border-border/50 rounded p-1.5 text-xs text-white placeholder:text-text-muted/40 focus:border-orange-500 focus:outline-none"
+                                className="ml-6 w-[85%] bg-black/20 border border-border rounded p-1.5 text-xs text-white placeholder:text-text-muted/40 focus:border-primary focus:outline-none"
                                 value={subtitleLangs}
                                 onChange={(e) =>
                                     updateFeature('postProcess', {
@@ -121,7 +104,7 @@ export function PostProcessingOptionsV2({
                     <input
                         type="text"
                         placeholder="http://user:pass@host:port"
-                        className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-orange-500 focus:outline-none font-mono"
+                        className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none font-mono"
                         value={proxy}
                         onChange={(e) =>
                             updateFeature('postProcess', {
@@ -131,6 +114,6 @@ export function PostProcessingOptionsV2({
                     />
                 </div>
             </div>
-        </Card>
+        </CardV2>
     )
 }

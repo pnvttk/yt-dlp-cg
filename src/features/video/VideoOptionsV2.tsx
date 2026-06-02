@@ -23,7 +23,7 @@ export function VideoOptionsV2(props: Props) {
                             Resolution Limit
                         </label>
                         <select
-                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-secondary focus:outline-none"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
                             value={ext}
                             onChange={(e) => {
                                 e.stopPropagation()
@@ -46,7 +46,7 @@ export function VideoOptionsV2(props: Props) {
                             Container / Ext
                         </label>
                         <select
-                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-secondary focus:outline-none"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
                             value={ext}
                             onChange={(e) => {
                                 e.stopPropagation()

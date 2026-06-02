@@ -1,7 +1,8 @@
-import { Card } from '../../components/ui/Card'
-import { useConfig } from '../../context/ConfigContext'
+import { CardV2 } from '@/components/ui'
 
-interface Props {
+import { useConfig } from '@/context'
+
+type Props = {
     enabled?: boolean
     format?: string
     quality?: number
@@ -9,50 +10,14 @@ interface Props {
     toggleFeature?: (key: string, value: any) => void
 }
 
-export function AudioOptionsV2({
-    enabled,
-    format = 'best',
-    quality = 0,
-}: Props) {
-    const { updateFeature, toggleFeature } = useConfig()
+export function AudioOptionsV2(props: Props) {
+    const { format = 'best', quality = 0 } = props
 
-    if (!enabled) {
-        return (
-            <Card
-                className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer border-dashed"
-                onClick={() => toggleFeature?.('audio', true)}
-            >
-                <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full border border-text-muted" />
-                    <span className="font-semibold text-text-muted">
-                        Enable Audio Extraction
-                    </span>
-                </div>
-            </Card>
-        )
-    }
+    const { updateFeature } = useConfig()
 
     return (
-        <Card
-            title="Audio Extraction"
-            className="border-primary/50 bg-primary/5"
-        >
+        <CardV2 title="Audio Extraction">
             <div className="flex flex-col gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="checkbox"
-                        checked={enabled}
-                        onChange={(e) => {
-                            e.stopPropagation()
-                            updateFeature?.('audio', {
-                                enabled: e.target.checked,
-                            })
-                        }}
-                        className="accent-primary w-4 h-4"
-                    />
-                    <span className="text-primary font-medium">Enabled</span>
-                </label>
-
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm text-text-muted mb-1">
@@ -94,6 +59,6 @@ export function AudioOptionsV2({
                     </div>
                 </div>
             </div>
-        </Card>
+        </CardV2>
     )
 }

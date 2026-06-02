@@ -1,7 +1,8 @@
-import { Card } from '../../components/ui/Card'
-import { useConfig } from '../../context/ConfigContext'
+import { CardV2 } from '@/components/ui'
 
-interface Props {
+import { useConfig } from '@/context'
+
+type Props = {
     enabled?: boolean
     startIndex?: number
     endIndex?: number | null
@@ -10,61 +11,31 @@ interface Props {
     toggleFeature?: (key: string, value: any) => void
 }
 
-export function PlaylistOptionsV2({
-    enabled,
-    startIndex = 0,
-    endIndex = null,
-    items = '',
-}: Props) {
-    const { updateFeature, toggleFeature } = useConfig()
+export function PlaylistOptionsV2(props: Props) {
+    const { startIndex = 0, endIndex = null, items = '' } = props
+
+    const { updateFeature } = useConfig()
 
     const handleRangeChange = (type: 'start' | 'end', val: string) => {
         const num = parseInt(val)
         if (isNaN(num)) {
-            if (type === 'end') updateFeature?.('playlist', { endIndex: null })
+            if (type === 'end')
+                updateFeature?.('playlist', {
+                    endIndex: null,
+                })
+
             return
         }
+
         updateFeature?.(
             'playlist',
             type === 'start' ? { startIndex: num } : { endIndex: num }
         )
     }
 
-    if (!enabled) {
-        return (
-            <Card
-                className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer border-dashed"
-                onClick={() => toggleFeature?.('playlist', true)}
-            >
-                <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full border border-text-muted" />
-                    <span className="font-semibold text-text-muted">
-                        Enable Playlist / Batch
-                    </span>
-                </div>
-            </Card>
-        )
-    }
-
     return (
-        <Card
-            title="Playlist & Batch"
-            className="border-purple-500/50 bg-purple-500/5"
-        >
+        <CardV2 title="Playlist & Batch">
             <div className="flex flex-col gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="checkbox"
-                        checked={enabled}
-                        onChange={(e) => {
-                            e.stopPropagation()
-                            toggleFeature?.('playlist', e.target.checked)
-                        }}
-                        className="accent-purple-500 w-4 h-4"
-                    />
-                    <span className="text-purple-500 font-medium">Enabled</span>
-                </label>
-
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm text-text-muted mb-1">
@@ -73,7 +44,7 @@ export function PlaylistOptionsV2({
                         <input
                             type="number"
                             min="1"
-                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-purple-500 focus:outline-none"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
                             value={startIndex}
                             onChange={(e) => {
                                 e.stopPropagation()
@@ -89,7 +60,7 @@ export function PlaylistOptionsV2({
                             type="number"
                             min="1"
                             placeholder="Last"
-                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-purple-500 focus:outline-none"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
                             value={endIndex ?? ''}
                             onChange={(e) => {
                                 e.stopPropagation()
@@ -104,7 +75,7 @@ export function PlaylistOptionsV2({
                         <input
                             type="text"
                             placeholder="1,2,3..."
-                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-purple-500 focus:outline-none"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none"
                             value={items}
                             onChange={(e) => {
                                 e.stopPropagation()
@@ -119,6 +90,6 @@ export function PlaylistOptionsV2({
                     </div>
                 </div>
             </div>
-        </Card>
+        </CardV2>
     )
 }

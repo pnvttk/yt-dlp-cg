@@ -9,7 +9,7 @@ import { OutputNameOptionsV2 } from '@/features/outputName/OutputNameOptionsV2'
 import { SectionsOptionsV2 } from '@/features/sections/SectionsOptionsV2'
 import { PostProcessingOptionsV2 } from '@/features/postProcess/PostProcessingOptionsV2'
 
-import { Button, Card } from './ui'
+import { Button, Operation } from './ui'
 
 export function LayoutV2() {
     const { config, toggleFeature, updateFeature, setUrl } = useConfig()
@@ -67,7 +67,7 @@ export function LayoutV2() {
                                 enabled: postProcess.enabled,
                             },
                         ].map(({ key, label, enabled }) => (
-                            <Card
+                            <Operation
                                 key={key}
                                 className={`cursor-pointer border ${enabled ? 'border-secondary/50' : 'border-dashed opacity-60 hover:opacity-100'}`}
                                 onClick={() => toggleFeature(key, !enabled)}
@@ -90,7 +90,7 @@ export function LayoutV2() {
                                         {label}
                                     </span>
                                 </div>
-                            </Card>
+                            </Operation>
                         ))}
                     </div>
                 </aside>
@@ -107,7 +107,6 @@ export function LayoutV2() {
                                 key: 'video',
                                 props: {
                                     enabled: video.enabled,
-                                    resolution: video.resolution,
                                     ext: video.ext,
                                 },
                             },
@@ -116,28 +115,30 @@ export function LayoutV2() {
                                 props: {
                                     enabled: audio.enabled,
                                     format: audio.format,
-                                    quality: audio.quality,
+                                    quality: Number(audio.quality) || 0,
                                 },
                             },
                             {
                                 key: 'playlist',
                                 props: {
                                     enabled: playlist.enabled,
-                                    mode: playlist.items,
+                                    startIndex: playlist.startIndex,
+                                    endIndex: playlist.endIndex,
+                                    items: playlist.items,
                                 },
                             },
                             {
                                 key: 'outputName',
                                 props: {
                                     enabled: outputName.enabled,
-                                    pattern: outputName.name,
+                                    name: outputName.name,
+                                    sectionsEnabled: sections.enabled,
                                 },
                             },
                             {
                                 key: 'sections',
                                 props: {
                                     enabled: sections.enabled,
-                                    mode: sections.mode,
                                     sections: sections.sections,
                                     textInput: sections.textInput,
                                 },
@@ -154,13 +155,6 @@ export function LayoutV2() {
                                 },
                             },
                         ].map(({ key, props }) => {
-                            const {
-                                enabled,
-                                ext,
-                                format,
-                                quality,
-                                sections: sectionsObj,
-                            } = props
                             if (!props.enabled) return null
 
                             switch (key) {
@@ -168,8 +162,7 @@ export function LayoutV2() {
                                     return (
                                         <VideoOptionsV2
                                             key={key}
-                                            enabled={enabled}
-                                            ext={ext}
+                                            {...props}
                                             updateFeature={updateFeature}
                                         />
                                     )
@@ -177,9 +170,7 @@ export function LayoutV2() {
                                     return (
                                         <AudioOptionsV2
                                             key={key}
-                                            enabled={enabled}
-                                            format={format}
-                                            quality={Number(quality) || 0}
+                                            {...props}
                                             updateFeature={updateFeature}
                                         />
                                     )
@@ -187,10 +178,7 @@ export function LayoutV2() {
                                     return (
                                         <PlaylistOptionsV2
                                             key={key}
-                                            enabled={enabled}
-                                            startIndex={playlist.startIndex}
-                                            endIndex={playlist.endIndex}
-                                            items={playlist.items}
+                                            {...props}
                                             updateFeature={updateFeature}
                                         />
                                     )
@@ -198,9 +186,7 @@ export function LayoutV2() {
                                     return (
                                         <OutputNameOptionsV2
                                             key={key}
-                                            enabled={enabled}
-                                            name={outputName.name}
-                                            sectionsEnabled={sections.enabled}
+                                            {...props}
                                             updateFeature={updateFeature}
                                         />
                                     )
@@ -208,14 +194,7 @@ export function LayoutV2() {
                                     return (
                                         <SectionsOptionsV2
                                             key={key}
-                                            enabled={enabled}
-                                            mode={(sectionsObj as any).mode}
-                                            sections={
-                                                (sectionsObj as any).sections
-                                            }
-                                            textInput={
-                                                (sectionsObj as any).textInput
-                                            }
+                                            {...props}
                                             updateFeature={updateFeature}
                                         />
                                     )
@@ -223,18 +202,7 @@ export function LayoutV2() {
                                     return (
                                         <PostProcessingOptionsV2
                                             key={key}
-                                            enabled={enabled}
-                                            embedThumbnail={
-                                                postProcess.embedThumbnail
-                                            }
-                                            embedMetadata={
-                                                postProcess.embedMetadata
-                                            }
-                                            embedSubs={postProcess.embedSubs}
-                                            subtitleLangs={
-                                                postProcess.subtitleLangs
-                                            }
-                                            proxy={postProcess.proxy}
+                                            {...props}
                                             updateFeature={updateFeature}
                                         />
                                     )
@@ -261,7 +229,7 @@ export function LayoutV2() {
                             <input
                                 type="text"
                                 placeholder="https://example.com/video"
-                                className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-secondary focus:outline-none font-mono"
+                                className="w-full bg-surface border border-border rounded-sm p-2 text-xs focus:border-primary focus:outline-none font-mono"
                                 value={config.url}
                                 onChange={(e) => setUrl(e.target.value)}
                             />
