@@ -23,7 +23,7 @@ export function LayoutV2() {
         <div className="h-screen flex flex-col font-mono">
             {/* Header */}
             <header className="h-8 bg-surface border-b border-border flex items-center pl-4 text-primary text-sm">
-                <span>yt-dlp Command Generator V2</span>
+                <span>yt-dlp Command Generator {__APP_VERSION__}</span>
 
                 <ThemeSelector />
             </header>
