@@ -4,7 +4,7 @@ export type GlobalConfig = {
         audio: AudioConfig
         video: VideoConfig
         playlist: PlaylistConfig
-        range: RangeConfig
+        // range: RangeConfig
         sections: SectionsConfig
         postProcess: PostProcessConfig
         outputName: OutputNameConfig
@@ -68,7 +68,7 @@ export const initialConfig: GlobalConfig = {
     features: {
         video: { enabled: true, resolution: 'best', ext: 'auto' },
         audio: { enabled: false, format: 'mp3', quality: '0' },
-        range: { enabled: false, start: '', end: '' },
+        // range: { enabled: false, start: '', end: '' },
         sections: { enabled: false, mode: 'text', sections: [], textInput: '' },
         playlist: { enabled: false, startIndex: 1, endIndex: null, items: '' },
         postProcess: {

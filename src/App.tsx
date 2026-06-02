@@ -1,54 +1,12 @@
-import { ConfigProvider, useConfig } from './context/ConfigContext';
-import { Layout } from './components/Layout';
-import { Card } from './components/ui/Card';
-import { AudioOptions } from './features/audio/AudioOptions';
-import { VideoOptions } from './features/video/VideoOptions';
-import { PlaylistOptions } from './features/playlist/PlaylistOptions';
-import { SectionsOptions } from './features/sections/SectionsOptions';
-import { PostProcessingOptions } from './features/postProcess/PostProcessingOptions';
-import { CommandPreview } from './features/command/CommandPreview';
-import { OutputNameOptions } from './features/outputName/OutputNameOptions';
-
-function UrlInput() {
-  const { config, setUrl } = useConfig();
-  return (
-    <Card className="border-primary/20 bg-surface">
-      <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-text-muted">Target URL</label>
-        <textarea
-          placeholder="https://www.youtube.com/watch?v=... (One per line or space separated)"
-          className="w-full bg-black/30 border border-border rounded-md p-3 text-white placeholder:text-text-muted/50 focus:border-primary focus:outline-none transition-colors min-h-[100px] resize-y"
-          value={config.url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-      </div>
-    </Card>
-  );
-}
-
-function FeatureGrid() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <VideoOptions />
-      <AudioOptions />
-      <SectionsOptions />
-      <PlaylistOptions />
-      <PostProcessingOptions />
-    </div>
-  );
-}
+import { LayoutV2 } from './app/LayoutV2'
+import { ConfigProvider } from './entities/config/ConfigContext'
 
 function App() {
-  return (
-    <ConfigProvider>
-      <Layout>
-        <UrlInput />
-        <OutputNameOptions />
-        <FeatureGrid />
-        <CommandPreview />
-      </Layout>
-    </ConfigProvider>
-  );
+    return (
+        <ConfigProvider>
+            <LayoutV2 />
+        </ConfigProvider>
+    )
 }
 
-export default App;
+export default App

@@ -1,0 +1,108 @@
+import { CardV2 } from '@/shared/ui'
+
+import { useConfig } from '@/entities/config'
+
+export function PostProcessingOptionsV2() {
+    const { config, updateFeature } = useConfig()
+    const { embedThumbnail, embedMetadata, embedSubs, subtitleLangs, proxy } =
+        config.features.postProcess
+
+    return (
+        <CardV2 title="Post Processing & Metadata">
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-row gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
+                        <input
+                            type="checkbox"
+                            checked={embedThumbnail}
+                            onChange={(e) => {
+                                e.stopPropagation()
+                                updateFeature?.('postProcess', {
+                                    embedThumbnail: e.target.checked,
+                                })
+                            }}
+                            className="accent-primary"
+                        />
+                        <span className="text-text font-medium text-sm">
+                            Embed Thumbnail
+                        </span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
+                        <input
+                            type="checkbox"
+                            checked={embedMetadata}
+                            onChange={(e) => {
+                                e.stopPropagation()
+                                updateFeature?.('postProcess', {
+                                    embedMetadata: e.target.checked,
+                                })
+                            }}
+                            className="accent-primary"
+                        />
+                        <span className="text-text font-medium text-sm">
+                            Add Metadata
+                        </span>
+                    </label>
+
+                    <div className="flex flex-col gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer bg-surface rounded hover:bg-surface/80">
+                            <input
+                                type="checkbox"
+                                checked={embedSubs}
+                                onChange={(e) => {
+                                    e.stopPropagation()
+                                    updateFeature?.('postProcess', {
+                                        embedSubs: e.target.checked,
+                                    })
+                                }}
+                                className="accent-primary"
+                            />
+                            <span className="text-text font-medium text-sm">
+                                Embed Subtitles
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div className="flex flex-row gap-4">
+                    {embedSubs && (
+                        <div>
+                            <label className="block text-sm text-text mb-1">
+                                Proxy URL (Optional)
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Langs: all, en, ja..."
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none font-mono"
+                                value={subtitleLangs}
+                                onChange={(e) =>
+                                    updateFeature('postProcess', {
+                                        subtitleLangs: e.target.value,
+                                    })
+                                }
+                                title="Subtitle languages (regex or comma-separated). Leave empty for default."
+                            />
+                        </div>
+                    )}
+                    <div className="flex-1">
+                        <label className="block text-sm text-text mb-1">
+                            Proxy URL (Optional)
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="http://user:pass@host:port"
+                            className="w-full bg-surface border border-border rounded p-2 text-sm focus:border-primary focus:outline-none font-mono"
+                            value={proxy}
+                            onChange={(e) =>
+                                updateFeature('postProcess', {
+                                    proxy: e.target.value,
+                                })
+                            }
+                        />
+                    </div>
+                </div>
+            </div>
+        </CardV2>
+    )
+}
