@@ -9,10 +9,10 @@ export function OutputNameOptionsV2() {
     const { video, audio, sections, outputName } = config.features
 
     // Determine the extension to show to the user (same logic as V1)
-    let extShow: string = 'mkv'
+    let extShow: string = 'mp4'
     if (!sections.enabled) {
         if (video.enabled) {
-            extShow = video.ext === 'auto' ? 'mkv' : video.ext
+            extShow = video.ext === 'auto' ? 'mp4' : video.ext
         } else if (audio.enabled && audio.format !== 'best') {
             extShow = audio.format
         } else if (audio.enabled && audio.format === 'best') {

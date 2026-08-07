@@ -63,12 +63,12 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
     const [config, setConfig] = useState<GlobalConfig>(getInitialState)
 
     useEffect(() => {
-        let ext = 'mkv'
+        let ext = 'mp4'
 
         if (config.features.video.enabled) {
             ext =
                 config.features.video.ext === 'auto'
-                    ? 'mkv'
+                    ? 'mp4'
                     : config.features.video.ext
         } else if (
             config.features.audio.enabled &&

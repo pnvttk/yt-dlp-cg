@@ -43,8 +43,8 @@ export function buildCommand(config: GlobalConfig): string {
         if (config.features.video.ext !== 'auto') {
             parts.push(`--merge-output-format ${config.features.video.ext}`)
         } else {
-            // Explicitly request merge to MKV if auto, to ensure audio/subs are merged
-            parts.push('--merge-output-format mkv')
+            // Explicitly request merge to MP4 if auto, to ensure audio/subs are merged
+            parts.push('--merge-output-format mp4')
         }
     }
 
@@ -105,11 +105,11 @@ export function buildCommand(config: GlobalConfig): string {
         config.features.outputName.name &&
         !config.features.sections.enabled
     ) {
-        let ext = 'mkv'
+        let ext = 'mp4'
         if (config.features.video.enabled) {
             ext =
                 config.features.video.ext === 'auto'
-                    ? 'mkv'
+                    ? 'mp4'
                     : config.features.video.ext
         } else if (
             config.features.audio.enabled &&

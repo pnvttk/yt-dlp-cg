@@ -12,11 +12,11 @@ export default function useSectionsOptionsV2() {
     const handleOpenFfmpeg = (e: React.MouseEvent) => {
         e.preventDefault()
 
-        let ext = 'mkv'
+        let ext = 'mp4'
         if (config.features.video.enabled) {
             ext =
                 config.features.video.ext === 'auto'
-                    ? 'mkv'
+                    ? 'mp4'
                     : config.features.video.ext
         } else if (
             config.features.audio.enabled &&
@@ -54,11 +54,11 @@ export default function useSectionsOptionsV2() {
 
     useEffect(() => {
         if (isFfmpegModalOpen) {
-            let ext = 'mkv'
+            let ext = 'mp4'
             if (config.features.video.enabled) {
                 ext =
                     config.features.video.ext === 'auto'
-                        ? 'mkv'
+                        ? 'mp4'
                         : config.features.video.ext
             } else if (
                 config.features.audio.enabled &&
